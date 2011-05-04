@@ -1,0 +1,9 @@
+A Craftbukkit plugin enabling users to save/load arbitrary block chunks 
+within their world, and then reload them at another location.  The first 
+version saves them as files, but I will eventually update this project 
+to use configurable web-based (PHP5) repositories instead.
+
+CHANGELOG:
+
+  v1.0 04-May-2011
+    * Created plugin
