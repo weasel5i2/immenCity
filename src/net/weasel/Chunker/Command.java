@@ -15,8 +15,8 @@ public class Command implements CommandExecutor
 	public Chunker instance;
 	
 	public static BlockFace getPlayerDirection( Player player ) { return Chunker.getPlayerDirection(player); }
-	public static void saveChunkFile( Player p, Location l, BlockFace d, String f, Integer x, Integer y, Integer z ) { Chunker.saveChunkFile( p, l, d, f, x, y, z ); }
-	public static void loadChunkFile( Player p, Location l, BlockFace d, String f ) { Chunker.loadChunkFile( p, l, d, f ); }
+	public static void saveChunkFile( Player p, Location l, BlockFace d, String f, Integer x, Integer y, Integer z ) { ChunkerSave.saveChunkFile( p, l, d, f, x, y, z ); }
+	public static void loadChunkFile( Player p, Location l, BlockFace d, String f ) { ChunkerLoad.loadChunkFile( p, l, d, f ); }
 	public static Integer[] getChunkDimensions( String f ) { return Chunker.getChunkDimensions( f ); }
 	
 	public Command(Chunker chunker) 
