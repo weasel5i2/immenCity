@@ -12,18 +12,20 @@ import org.bukkit.entity.Player;
 
 public class ChunkerLoad 
 {
-	public static void loadChunkFile( Player p, Location l, BlockFace d, String f )
+	public static void logOutput( String message ) { Chunker.logOutput(message); }
+
+	public static void loadChunkFile( Player player, Location loc, BlockFace dir, String file )
 	{
-		String filename = "plugins/Chunker/" + p.getName() + "." + f + ".chunk";
+		String filename = "plugins/Chunker/" + player.getName() + "." + file + ".chunk";
 		File chunkFile = new File(filename);
 		
 		if( chunkFile.exists() == false )
 		{
-			p.sendMessage( ChatColor.RED + "Error: " + ChatColor.BLUE 
+			player.sendMessage( ChatColor.RED + "Error: " + ChatColor.BLUE 
 			+ "Unable to find a chunkfile named '" + ChatColor.YELLOW 
-			+ f + ChatColor.BLUE + "'." );
+			+ file + ChatColor.BLUE + "'." );
 			
-			p.sendMessage( ChatColor.BLUE + "Use " + ChatColor.YELLOW
+			player.sendMessage( ChatColor.BLUE + "Use " + ChatColor.YELLOW
 			+ "/chunker list" + ChatColor.BLUE + " to see your chunkfiles." );
 			
 			return;
@@ -31,7 +33,7 @@ public class ChunkerLoad
 		
 		String[] data = new String[1];
 		Integer C = 0;
-		Block b = null;
+		Block block = null;
 		
 		// Saved chunk dimensions
 		double x, y, z;
@@ -45,122 +47,133 @@ public class ChunkerLoad
 		// Counters..
 		double xc, yc, zc;
 		
-		// Modifiers..
-		double xm, zm;
-		
-		Integer[] dims = Chunker.getChunkDimensions( p.getName() + "." + f );
-		ArrayList<String> chunk = Chunker.getChunkData( p.getName() + "." + f );
+		Integer[] dims = Chunker.getChunkDimensions( player.getName() + "." + file );
+		ArrayList<String> chunk = Chunker.getChunkData( player.getName() + "." + file );
 		
 		x = dims[0];
 		y = dims[1];
 		z = dims[2];
 		
-		startx = l.getX();
-		starty = l.getY();
-		startz = l.getZ();
+		startx = loc.getX();
+		starty = loc.getY();
+		startz = loc.getZ();
 
 		endy = starty + y;
 
-		if( d == BlockFace.NORTH )
+		if( dir == BlockFace.NORTH )
 		{
 			// When facing NORTH, X = Z-- and Z = X--
-			xm = -1;
-			zm = -1;
-				
-			endx = startz - x;
-			endz = startx - z;
-
-			for( xc = startz; xc != endx; xc += xm )
-			{
-				for( yc = starty; yc != endy; yc++ )
-				{
-					for( zc = startx; zc != endz; zc += zm )
-					{
-						data = chunk.get(C).split(" ");
-						b = p.getWorld().getBlockAt( (int)xc, (int)yc, (int)zc );
-						b.setType( Material.getMaterial( Integer.parseInt(data[0]) ) );
-						b.setData( Byte.parseByte( data[1] ) );
-								C++;
-					}
-				}
-			}
-		}
-
-		else if( d == BlockFace.EAST )
-		{
-			// When facing EAST, X = X++ and Z = Z--
-			xm = 1;
-			zm = -1;
-				
-			endx = startx + x;
+			startx = loc.getZ();
+			starty = loc.getY();
+			startz = loc.getX();
+			
+			endx = startx - x;
+			endy = starty + y;
 			endz = startz - z;
 
-			for( xc = startx; xc != endx; xc += xm )
+			for( zc = startz; zc != endz; zc-- )
 			{
 				for( yc = starty; yc != endy; yc++ )
 				{
-					for( zc = startz; zc != endz; zc += zm )
+					for( xc = startx; xc != endx; xc-- )
 					{
 						data = chunk.get(C).split(" ");
-						b = p.getWorld().getBlockAt( (int)xc, (int)yc, (int)zc );
-						b.setType( Material.getMaterial( Integer.parseInt(data[0]) ) );
-						b.setData( Byte.parseByte( data[1] ) );
-								C++;
+						block = player.getWorld().getBlockAt((int)zc, (int)yc, (int)xc);
+
+						block.setType( Material.getMaterial( Integer.parseInt(data[0]) ) );
+						block.setData( Byte.parseByte( data[1] ) );
+						C++;
 					}
 				}
 			}
 		}
 
-		if( d == BlockFace.SOUTH )
+		else if( dir == BlockFace.EAST )
 		{
-			// When facing SOUTH, X = Z++ and Z = X++
-			xm = 1;
-			zm = 1;
-				
-			endx = startz + x;
-			endz = startx + z;
+			// When facing EAST, X = X++ and Z = Z--
+			startx = loc.getX();
+			starty = loc.getY();
+			startz = loc.getZ();
+			
+			endx = startx + x;
+			endy = starty + y;
+			endz = startz - z;
 
-			for( xc = startz; xc != endz; xc += xm )
+			for( zc = startz; zc != endz; zc-- )
 			{
 				for( yc = starty; yc != endy; yc++ )
 				{
-					for( zc = startx; zc != endx; zc += zm )
+					for( xc = startx; xc != endx; xc++ )
 					{
 						data = chunk.get(C).split(" ");
-						b = p.getWorld().getBlockAt( (int)xc, (int)yc, (int)zc );
-						b.setType( Material.getMaterial( Integer.parseInt(data[0]) ) );
-						b.setData( Byte.parseByte( data[1] ) );
-								C++;
+						block = player.getWorld().getBlockAt((int)xc, (int)yc, (int)zc);
+						block.setType( Material.getMaterial( Integer.parseInt(data[0]) ) );
+						block.setData( Byte.parseByte( data[1] ) );
+						C++;
+					}
+				}
+			}
+			
+		}
+
+		else if( dir == BlockFace.SOUTH )
+		{
+			// When facing SOUTH, X = X++ and Z = Z++
+
+			startx = loc.getZ();
+			starty = loc.getY();
+			startz = loc.getX();
+			
+			endx = startx + x;
+			endy = starty + y;
+			endz = startz - z;
+
+			for( zc = startz; zc != endz; zc-- )
+			{
+				for( yc = starty; yc != endy; yc++ )
+				{
+					for( xc = startx; xc != endx; xc++ )
+					{
+						data = chunk.get(C).split(" ");
+						block = player.getWorld().getBlockAt((int)zc, (int)yc, (int)xc);
+						block.setType( Material.getMaterial( Integer.parseInt(data[0]) ) );
+						block.setData( Byte.parseByte( data[1] ) );
+						C++;
 					}
 				}
 			}
 		}
 
-		else if( d == BlockFace.WEST )
+		else if( dir == BlockFace.WEST )
 		{
 			// When facing WEST, X = X-- and Z = Z++
-			xm = -1;
-			zm = 1;
-				
+
+			startx = loc.getX();
+			starty = loc.getY();
+			startz = loc.getZ();
+			
 			endx = startx - x;
+			endy = starty + y;
 			endz = startz + z;
 
-			for( xc = startx; xc != endx; xc += xm )
+			for( zc = startz; zc != endz; zc++ )
 			{
 				for( yc = starty; yc != endy; yc++ )
 				{
-					for( zc = startz; zc != endz; zc += zm )
+					for( xc = startx; xc != endx; xc-- )
 					{
 						data = chunk.get(C).split(" ");
-						b = p.getWorld().getBlockAt( (int)xc, (int)yc, (int)zc );
-						b.setType( Material.getMaterial( Integer.parseInt(data[0]) ) );
-						b.setData( Byte.parseByte( data[1] ) );
-								C++;
+						block = player.getWorld().getBlockAt((int)xc, (int)yc, (int)zc);
+						block.setType( Material.getMaterial( Integer.parseInt(data[0]) ) );
+						block.setData( Byte.parseByte( data[1] ) );
+						C++;
 					}
 				}
 			}
+			
+
 		}
 		
-		p.sendMessage( "Done!" );
+		player.sendMessage( "Done!" );
 	}
 }
