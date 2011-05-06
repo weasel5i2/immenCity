@@ -215,148 +215,24 @@ public class Chunker extends JavaPlugin
 	{
 		int retVal = data;
 		
-		// Wooden door
+		// Door
 		//
-		if( type == 64 )
+		if( type == 64 || type == 71 )
 		{
-			if( newDir == BlockFace.NORTH )
-			{
-				if( oldDir == BlockFace.EAST )
-				{
-					if( data == 3 ) retVal = 2;
-					if( data == 11 ) retVal = 10;
-				}
-				
-				if( oldDir == BlockFace.WEST )
-				{
-					if( data == 1 ) retVal = 2;
-					if( data == 9 ) retVal = 10;
-				}
-
-				if( oldDir == BlockFace.SOUTH )
-				{
-					if( data == 0 ) retVal = 2;
-					if( data == 8 ) retVal = 10;
-				}
-			}
-
-			if( newDir == BlockFace.EAST )
-			{
-				if( oldDir == BlockFace.NORTH || oldDir == BlockFace.SOUTH  )
-				{
-					if( data == 0 || data == 1 || data == 2 ) 
-						retVal = 3;
-					else if( data == 8 || data == 9 || data == 10 )
-						retVal = 11;
-				}
-			}
-
-			if( newDir == BlockFace.SOUTH )
-			{
-				if( oldDir == BlockFace.EAST || oldDir == BlockFace.WEST )
-				{
-					if( data == 1 || data == 2 || data == 3 ) 
-						retVal = 0;
-					else if( data == 9 || data == 10 || data == 11 )
-						retVal = 8;
-				}
-			}
-
-			if( newDir == BlockFace.WEST )
-			{
-				if( oldDir == BlockFace.NORTH || oldDir == BlockFace.SOUTH  )
-				{
-					if( data == 0 || data == 2 || data == 3 ) 
-						retVal = 1;
-					else if( data == 8 || data == 10 || data == 11 )
-						retVal = 9;
-				}
-			}
+			retVal = Door.reorientBlockData( oldDir, newDir, type, data );
 		}
 		
-		// Standard rails
+		// Rails
 		//
 		if( type == 66 )
 		{
-			// Straight rails
-			//
-			if( data == 0 || data == 1 )
-			{
-				if( newDir == BlockFace.WEST || newDir == BlockFace.EAST )
-				{
-					if( oldDir == BlockFace.NORTH || oldDir == BlockFace.SOUTH )
-					{
-						if( data == 1 ) retVal = 0;
-						if( data == 0 ) retVal = 1;
-					}
-				}
-				
-				else if( newDir == BlockFace.NORTH || newDir == BlockFace.SOUTH )
-				{
-					if( oldDir == BlockFace.EAST || oldDir == BlockFace.WEST )
-					{
-						if( data == 1 ) retVal = 0;
-						if( data == 0 ) retVal = 1;
-					}
-				}
-			}
-						
-			// Corner rails
-			//
-			else if( data >= 6 || data <= 9 )
-			{
-				if( newDir == BlockFace.NORTH )
-				{
-					if( oldDir == BlockFace.EAST )
-					{
-						if( data == 6 ) retVal = 9;
-						if( data == 7 ) retVal = 6;
-						if( data == 8 ) retVal = 7;
-						if( data == 9 ) retVal = 8;
-					}
-					else if( oldDir == BlockFace.SOUTH )
-					{
-						if( data == 7 ) retVal = 9;
-						if( data == 8 ) retVal = 6;
-						if( data == 9 ) retVal = 7;
-						if( data == 6 ) retVal = 8;
-					}
-					else if( oldDir == BlockFace.WEST )
-					{
-						if( data == 8 ) retVal = 9;
-						if( data == 9 ) retVal = 6;
-						if( data == 6 ) retVal = 7;
-						if( data == 7 ) retVal = 8;
-					}
-				}
-
-				if( newDir == BlockFace.EAST )
-				{
-					if( oldDir == BlockFace.NORTH || oldDir == BlockFace.SOUTH  )
-					{
-						if( data == 7 ) retVal = 6;
-						if( data == 8 ) retVal = 7;
-					}
-				}
-			
-				if( newDir == BlockFace.SOUTH )
-				{
-					if( oldDir == BlockFace.EAST || oldDir == BlockFace.WEST )
-					{
-						if( data == 7 ) retVal = 7;
-						if( data == 8 ) retVal = 8;
-					}
-				}
-
-				if( newDir == BlockFace.WEST )
-				{
-					if( oldDir == BlockFace.NORTH || oldDir == BlockFace.SOUTH  )
-					{
-						if( data == 7 ) retVal = 8;
-						if( data == 8 ) retVal = 9;
-					}
-				}
-			}
+			retVal = Rail.reorientBlockData( oldDir , newDir, type, data );
+		}
+		
+		// Torches
+		if( type == 50 )
+		{
+			retVal = Torch.reorientBlockData( oldDir , newDir, type, data );
 		}
 		
 		System.out.println( "Block " + type + " old=" + data + ", new=" + retVal );

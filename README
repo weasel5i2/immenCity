@@ -4,6 +4,22 @@ version saves them as files, but I will eventually update this project
 to use configurable web-based (PHP5) repositories instead.
 
 CHANGELOG:
+==========
 
   v1.0 04-May-2011
     * Created plugin
+
+TO DO:
+======
+
+* Finish creating the blockData algorithms for the
+  remaining blockData-positioned blockTypes
+
+* Add HTTP load/save chunk support
+    
+    - Create PHP5 scripts for receiving/sending chunks
+    - Find developer(s) to create other platform versions
+    
+* Add Permissions support
+
+* Add iConomy support
