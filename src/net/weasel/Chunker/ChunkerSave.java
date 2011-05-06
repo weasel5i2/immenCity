@@ -69,7 +69,7 @@ public class ChunkerSave
 			
 			player.sendMessage( "Saving " + blocks.size() + " blocks.." );
 
-			saveChunkData( player, blocks, file, x, y, z );
+			saveChunkData( player, blocks, dir, file, x, y, z );
 		}
 		
 		else if( dir == BlockFace.EAST )
@@ -109,20 +109,20 @@ public class ChunkerSave
 			
 			player.sendMessage( "Saving " + blocks.size() + " blocks.." );
 
-			saveChunkData( player, blocks, file, x, y, z );
+			saveChunkData( player, blocks, dir, file, x, y, z );
 		}
 		
 		else if( dir == BlockFace.SOUTH )
 		{
 			// When facing SOUTH, X = Z-- and Z = X++
 
-			startx = loc.getZ();
+			startx = loc.getX();
 			starty = loc.getY();
-			startz = loc.getX();
+			startz = loc.getZ();
 			
 			endx = startx + x;
 			endy = starty + y;
-			endz = startz - z;
+			endz = startz + z;
 
 			logOutput( "startX: " + startx );
 			logOutput( "startY: " + starty );
@@ -131,15 +131,15 @@ public class ChunkerSave
 			logOutput( "endY: " + endy );
 			logOutput( "endZ: " + endz );
 
-			for( zc = startz; zc != endz; zc-- )
+			for( xc = startx; xc != endx; xc++ )
 			{
 				for( yc = starty; yc != endy; yc++ )
 				{
-					for( xc = startx; xc != endx; xc++ )
+					for( zc = startz; zc != endz; zc++ )
 					{
-						block = player.getWorld().getBlockAt((int)zc, (int)yc, (int)xc);
+						block = player.getWorld().getBlockAt((int)xc, (int)yc, (int)zc);
 
-						logOutput( "block " + zc + "," + yc + "," + xc + " = " 
+						logOutput( "block " + xc + "," + yc + "," + zc + " = " 
 						+ block.getTypeId() + ":" + block.getData() );
 						
 						blocks.add( block.getTypeId() + " " + block.getData() );
@@ -149,7 +149,7 @@ public class ChunkerSave
 			
 			player.sendMessage( "Saving " + blocks.size() + " blocks.." );
 
-			saveChunkData( player, blocks, file, x, y, z );
+			saveChunkData( player, blocks, dir, file, x, y, z );
 		}
 		else
 		{
@@ -188,11 +188,11 @@ public class ChunkerSave
 			
 			player.sendMessage( "Saving " + blocks.size() + " blocks.." );
 
-			saveChunkData( player, blocks, file, x, y, z );
+			saveChunkData( player, blocks, dir, file, x, y, z );
 		}
 	}
 
-	public static void saveChunkData( Player p, ArrayList<String> data, String file, int x, int y, int z )
+	public static void saveChunkData( Player p, ArrayList<String> data, BlockFace dir, String file, int x, int y, int z )
 	{
 		int counter = 0;
 		String filename = "plugins/Chunker/" + p.getName() + "." + file + ".chunk";
@@ -208,6 +208,7 @@ public class ChunkerSave
 
 			outP.println( "[BEGIN CHUNKFILE " + Chunker.pluginVersion + "] " + cDate );
 			outP.println( "SIZE " + x + " " + y + " " + z );
+			outP.println( "OO " + dir.name() );
 			
 			for( counter = 0; counter < data.size(); counter++ )
 			{

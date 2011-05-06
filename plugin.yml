@@ -3,5 +3,8 @@ main: net.weasel.Chunker.Chunker
 version: 1.0
 commands:
   chunker:
-    description: Save and load entire chunks of your world
-    usage: (handled by plugin)
+    description: "Save and load entire chunks of your world"
+    usage: "(handled by plugin)"
+  cstart:
+    description: "Shortcut to set the start point for chunk save/load operations."
+    usage: "(handled by plugin)"

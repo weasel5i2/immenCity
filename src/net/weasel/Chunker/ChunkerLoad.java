@@ -2,6 +2,7 @@ package net.weasel.Chunker;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -12,12 +13,21 @@ import org.bukkit.entity.Player;
 
 public class ChunkerLoad 
 {
+	public static ArrayList<String> getChunkData( String f ) { return Chunker.getChunkData(f); }
+	public static String getChunkOrientation( String f ) { return Chunker.getChunkOrientation(f); }
+	public static Integer[] getChunkDimensions( String f ) { return Chunker.getChunkDimensions(f); }
+	public static boolean isOrientedBlockType( int type ) { return Chunker.isOrientedBlockType(type); }
+	public static int reorientBlockData( BlockFace oldDir, BlockFace newDir, int type, int data ) { return Chunker.reorientBlockData(oldDir, newDir, type, data ); }
 	public static void logOutput( String message ) { Chunker.logOutput(message); }
 
 	public static void loadChunkFile( Player player, Location loc, BlockFace dir, String file )
 	{
 		String filename = "plugins/Chunker/" + player.getName() + "." + file + ".chunk";
 		File chunkFile = new File(filename);
+		BlockFace oldDir = null;
+
+		ArrayList<Location> orientedBlocks = new ArrayList<Location>();
+		HashMap<Location,String> obData = new HashMap<Location,String>();
 		
 		if( chunkFile.exists() == false )
 		{
@@ -47,8 +57,9 @@ public class ChunkerLoad
 		// Counters..
 		double xc, yc, zc;
 		
-		Integer[] dims = Chunker.getChunkDimensions( player.getName() + "." + file );
-		ArrayList<String> chunk = Chunker.getChunkData( player.getName() + "." + file );
+		Integer[] dims = getChunkDimensions( player.getName() + "." + file );
+		ArrayList<String> chunk = getChunkData( player.getName() + "." + file );
+		oldDir = BlockFace.valueOf(getChunkOrientation( player.getName() + "." + file ) );
 		
 		x = dims[0];
 		y = dims[1];
@@ -79,11 +90,45 @@ public class ChunkerLoad
 					{
 						data = chunk.get(C).split(" ");
 						block = player.getWorld().getBlockAt((int)zc, (int)yc, (int)xc);
-
-						block.setType( Material.getMaterial( Integer.parseInt(data[0]) ) );
-						block.setData( Byte.parseByte( data[1] ) );
+						
+						if( isOrientedBlockType( Integer.parseInt(data[0]) ) == true )
+						{
+							orientedBlocks.add( block.getLocation() );
+							obData.put( block.getLocation(), chunk.get(C) );
+						}
+						else
+						{
+							block.setTypeId( Integer.parseInt(data[0]) );
+							block.setData( (byte)Integer.parseInt(data[1]) );
+						}
 						C++;
 					}
+				}
+			}
+			
+			if( orientedBlocks.size() > 0 )
+			{
+				int newOrientation = 0;
+				
+				for( int ob = 0; ob < orientedBlocks.size(); ob++ )
+				{
+					block = player.getWorld().getBlockAt(orientedBlocks.get(ob));
+					data = obData.get( orientedBlocks.get(ob) ).split( " " );
+					
+					block.setTypeId( Integer.parseInt(data[0]) );
+					
+					newOrientation = reorientBlockData( oldDir, dir, Integer.parseInt(data[0]), Integer.parseInt(data[1]) );
+					block.setData( (byte)newOrientation );
+				}
+				for( int ob = 0; ob < orientedBlocks.size(); ob++ )
+				{
+					block = player.getWorld().getBlockAt(orientedBlocks.get(ob));
+					data = obData.get( orientedBlocks.get(ob) ).split( " " );
+					
+					block.setTypeId( Integer.parseInt(data[0]) );
+					
+					newOrientation = reorientBlockData( oldDir, dir, Integer.parseInt(data[0]), Integer.parseInt(data[1]) );
+					block.setData( (byte)newOrientation );
 				}
 			}
 		}
@@ -107,39 +152,108 @@ public class ChunkerLoad
 					{
 						data = chunk.get(C).split(" ");
 						block = player.getWorld().getBlockAt((int)xc, (int)yc, (int)zc);
-						block.setType( Material.getMaterial( Integer.parseInt(data[0]) ) );
-						block.setData( Byte.parseByte( data[1] ) );
+						
+						if( isOrientedBlockType( Integer.parseInt(data[0]) ) == true )
+						{
+							orientedBlocks.add( block.getLocation() );
+							obData.put( block.getLocation(), chunk.get(C) );
+						}
+						else
+						{
+							block.setType( Material.getMaterial( Integer.parseInt(data[0]) ) );
+							block.setData( Byte.parseByte( data[1] ) );
+						}
 						C++;
 					}
 				}
 			}
 			
+			if( orientedBlocks.size() > 0 )
+			{
+				int newOrientation = 0;
+				
+				for( int ob = 0; ob < orientedBlocks.size(); ob++ )
+				{
+					block = player.getWorld().getBlockAt(orientedBlocks.get(ob));
+					data = obData.get( orientedBlocks.get(ob) ).split( " " );
+
+					newOrientation = reorientBlockData( oldDir, dir, Integer.parseInt(data[0]), Integer.parseInt(data[1]) );
+					
+					block.setTypeId( Integer.parseInt(data[0]) );
+					block.setData( (byte)newOrientation );
+				}
+				for( int ob = 0; ob < orientedBlocks.size(); ob++ )
+				{
+					block = player.getWorld().getBlockAt(orientedBlocks.get(ob));
+					data = obData.get( orientedBlocks.get(ob) ).split( " " );
+
+					newOrientation = reorientBlockData( oldDir, dir, Integer.parseInt(data[0]), Integer.parseInt(data[1]) );
+					
+					block.setTypeId( Integer.parseInt(data[0]) );
+					block.setData( (byte)newOrientation );
+				}
+			}
 		}
 
 		else if( dir == BlockFace.SOUTH )
 		{
 			// When facing SOUTH, X = X++ and Z = Z++
 
-			startx = loc.getZ();
+			startx = loc.getX();
 			starty = loc.getY();
-			startz = loc.getX();
+			startz = loc.getZ();
 			
 			endx = startx + x;
 			endy = starty + y;
-			endz = startz - z;
+			endz = startz + z;
 
-			for( zc = startz; zc != endz; zc-- )
+			for( xc = startx; xc != endx; xc++ )
 			{
 				for( yc = starty; yc != endy; yc++ )
 				{
-					for( xc = startx; xc != endx; xc++ )
+					for( zc = startz; zc != endz; zc++ )
 					{
 						data = chunk.get(C).split(" ");
-						block = player.getWorld().getBlockAt((int)zc, (int)yc, (int)xc);
-						block.setType( Material.getMaterial( Integer.parseInt(data[0]) ) );
-						block.setData( Byte.parseByte( data[1] ) );
+						block = player.getWorld().getBlockAt((int)xc, (int)yc, (int)zc);
+
+						if( isOrientedBlockType( Integer.parseInt(data[0]) ) == true )
+						{
+							orientedBlocks.add( block.getLocation() );
+							obData.put( block.getLocation(), chunk.get(C) );
+						}
+						else
+						{
+							block.setType( Material.getMaterial( Integer.parseInt(data[0]) ) );
+							block.setData( Byte.parseByte( data[1] ) );
+						}
 						C++;
 					}
+				}
+			}
+
+			if( orientedBlocks.size() > 0 )
+			{
+				int newOrientation = 0;
+				
+				for( int ob = 0; ob < orientedBlocks.size(); ob++ )
+				{
+					block = player.getWorld().getBlockAt(orientedBlocks.get(ob));
+					data = obData.get( orientedBlocks.get(ob) ).split( " " );
+
+					newOrientation = reorientBlockData( oldDir, dir, Integer.parseInt(data[0]), Integer.parseInt(data[1]) );
+					
+					block.setTypeId( Integer.parseInt(data[0]) );
+					block.setData( (byte)newOrientation );
+				}
+				for( int ob = 0; ob < orientedBlocks.size(); ob++ )
+				{
+					block = player.getWorld().getBlockAt(orientedBlocks.get(ob));
+					data = obData.get( orientedBlocks.get(ob) ).split( " " );
+
+					newOrientation = reorientBlockData( oldDir, dir, Integer.parseInt(data[0]), Integer.parseInt(data[1]) );
+					
+					block.setTypeId( Integer.parseInt(data[0]) );
+					block.setData( (byte)newOrientation );
 				}
 			}
 		}
@@ -164,14 +278,47 @@ public class ChunkerLoad
 					{
 						data = chunk.get(C).split(" ");
 						block = player.getWorld().getBlockAt((int)xc, (int)yc, (int)zc);
-						block.setType( Material.getMaterial( Integer.parseInt(data[0]) ) );
-						block.setData( Byte.parseByte( data[1] ) );
+
+						if( isOrientedBlockType( Integer.parseInt(data[0]) ) == true )
+						{
+							orientedBlocks.add( block.getLocation() );
+							obData.put( block.getLocation(), chunk.get(C) );
+						}
+						else
+						{
+							block.setType( Material.getMaterial( Integer.parseInt(data[0]) ) );
+							block.setData( Byte.parseByte( data[1] ) );
+						}
 						C++;
 					}
 				}
 			}
 			
+			if( orientedBlocks.size() > 0 )
+			{
+				int newOrientation = 0;
+				
+				for( int ob = 0; ob < orientedBlocks.size(); ob++ )
+				{
+					block = player.getWorld().getBlockAt(orientedBlocks.get(ob));
+					data = obData.get( orientedBlocks.get(ob) ).split( " " );
 
+					newOrientation = reorientBlockData( oldDir, dir, Integer.parseInt(data[0]), Integer.parseInt(data[1]) );
+					
+					block.setTypeId( Integer.parseInt(data[0]) );
+					block.setData( (byte)newOrientation );
+				}
+				for( int ob = 0; ob < orientedBlocks.size(); ob++ )
+				{
+					block = player.getWorld().getBlockAt(orientedBlocks.get(ob));
+					data = obData.get( orientedBlocks.get(ob) ).split( " " );
+
+					newOrientation = reorientBlockData( oldDir, dir, Integer.parseInt(data[0]), Integer.parseInt(data[1]) );
+					
+					block.setTypeId( Integer.parseInt(data[0]) );
+					block.setData( (byte)newOrientation );
+				}
+			}
 		}
 		
 		player.sendMessage( "Done!" );

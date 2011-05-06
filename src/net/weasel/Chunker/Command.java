@@ -56,6 +56,11 @@ public class Command implements CommandExecutor
 				
 				return true;
 			}
+			
+			if( a1.equals( "measure" ) )
+			{
+				
+			}
 
 			if( a1.equals( "save" ) )
 			{
