@@ -63,14 +63,14 @@ public class Chunker extends JavaPlugin
 		if( yaw < 0 ) yaw += 360;
 		if( yaw > 360 ) yaw -= 360;
 		
-		if( yaw <= 25 )
-			retVal = BlockFace.WEST;
-		else if( yaw <= 115 )
+		if( yaw > 45 && yaw < 135 ) 
 			retVal = BlockFace.NORTH;
-		else if( yaw <= 205 )
+		else if( yaw > 135 && yaw < 225 ) 
 			retVal = BlockFace.EAST;
-		else
+		else if( yaw > 225 && yaw < 315 ) 
 			retVal = BlockFace.SOUTH;
+		else if( yaw > 315 || yaw < 45 ) 
+			retVal = BlockFace.WEST;
 
 		return retVal;
 	}
@@ -235,8 +235,20 @@ public class Chunker extends JavaPlugin
 			retVal = Torch.reorientBlockData( oldDir , newDir, type, data );
 		}
 		
-		System.out.println( "Block " + type + " old=" + data + ", new=" + retVal );
-		
 		return retVal;
 	}
+
+	public static String arrayToString(String[] a, String separator) 
+    {
+        String result = "";
+        
+        if (a.length > 0) 
+        {
+            result = a[0];    // start with the first element
+            for (int i=1; i<a.length; i++) {
+                result = result + separator + a[i];
+            }
+        }
+        return result;
+    }
 }
