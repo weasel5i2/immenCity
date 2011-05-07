@@ -1,4 +1,4 @@
-package net.weasel.Chunker;
+package net.weasel.immenCity;
 
 import java.io.File;
 
@@ -10,16 +10,16 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class Command implements CommandExecutor
+public class LoadCommand implements CommandExecutor
 {
-	public Chunker instance;
+	public immenCity instance;
 	
-	public static BlockFace getPlayerDirection( Player player ) { return Chunker.getPlayerDirection(player); }
-	public static void saveChunkFile( Player p, Location l, BlockFace d, String f, Integer x, Integer y, Integer z ) { ChunkerSave.saveChunkFile( p, l, d, f, x, y, z ); }
-	public static void loadChunkFile( Player p, Location l, BlockFace d, String f ) { ChunkerLoad.loadChunkFile( p, l, d, f ); }
-	public static Integer[] getChunkDimensions( String f ) { return Chunker.getChunkDimensions( f ); }
+	public static BlockFace getPlayerDirection( Player player ) { return immenCity.getPlayerDirection(player); }
+	public static void saveChunkFile( Player p, Location l, BlockFace d, String f, Integer x, Integer y, Integer z ) { SaveStructure.saveChunkFile( p, l, d, f, x, y, z ); }
+	public static void loadChunkFile( Player p, Location l, BlockFace d, String f ) { LoadStructure.loadChunkFile( p, l, d, f ); }
+	public static Integer[] getChunkDimensions( String f ) { return immenCity.getChunkDimensions( f ); }
 	
-	public Command(Chunker chunker) 
+	public LoadCommand(immenCity chunker) 
 	{
 		instance = chunker;
 	}
@@ -40,8 +40,8 @@ public class Command implements CommandExecutor
 				Player p = (Player)arg0;
 				Block b = p.getTargetBlock( null, 20 );
 
-				Chunker.playerBlocks.put( p, b.getLocation() );
-				Chunker.playerFacing.put( p, getPlayerDirection(p) );
+				immenCity.playerBlocks.put( p, b.getLocation() );
+				immenCity.playerFacing.put( p, getPlayerDirection(p) );
 				
 				p.sendMessage( ChatColor.BLUE + "Starting point set: " 
 				+ ChatColor.YELLOW + b.getX() + ChatColor.BLUE + ","
@@ -64,7 +64,7 @@ public class Command implements CommandExecutor
 
 			if( a1.equals( "save" ) )
 			{
-				if( Chunker.playerBlocks.containsKey((Player)arg0) == false )
+				if( immenCity.playerBlocks.containsKey((Player)arg0) == false )
 				{
 					arg0.sendMessage( ChatColor.BLUE + "You have not set a start point." );
 					arg0.sendMessage( ChatColor.BLUE + "Use " + ChatColor.YELLOW
@@ -81,7 +81,7 @@ public class Command implements CommandExecutor
 					
 					if( xSize > 0 && ySize > 0 && zSize > 0 )
 					{
-						saveChunkFile( (Player)arg0, Chunker.playerBlocks.get((Player)arg0),
+						saveChunkFile( (Player)arg0, immenCity.playerBlocks.get((Player)arg0),
 									   getPlayerDirection((Player)arg0), fName, xSize, ySize,
 									   zSize );
 						return true;
@@ -123,7 +123,7 @@ public class Command implements CommandExecutor
 
 			if( a1.equals( "load" ) )
 			{
-				if( Chunker.playerBlocks.containsKey((Player)arg0) == false )
+				if( immenCity.playerBlocks.containsKey((Player)arg0) == false )
 				{
 					arg0.sendMessage( ChatColor.BLUE + "You have not set a start point." );
 					arg0.sendMessage( ChatColor.BLUE + "Use " + ChatColor.YELLOW
@@ -133,8 +133,8 @@ public class Command implements CommandExecutor
 				}
 				else if( a2.equals("") == false )
 				{
-					loadChunkFile( (Player)arg0, Chunker.playerBlocks.get((Player)arg0),
-							 	   Chunker.playerFacing.get((Player)arg0), a2 );
+					loadChunkFile( (Player)arg0, immenCity.playerBlocks.get((Player)arg0),
+							 	   immenCity.playerFacing.get((Player)arg0), a2 );
 					return true;
 				}
 			}
@@ -162,7 +162,7 @@ public class Command implements CommandExecutor
 	
 	public static String[] getChunkList()
 	{
-		File dir = new File("plugins/Chunker/");
+		File dir = new File("plugins/immenCity/");
 		File[] files = dir.listFiles();
 		String file = "";
 		

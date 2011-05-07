@@ -1,4 +1,4 @@
-package net.weasel.Chunker;
+package net.weasel.immenCity;
 
 import org.bukkit.block.BlockFace;
 

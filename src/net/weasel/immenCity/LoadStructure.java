@@ -1,4 +1,4 @@
-package net.weasel.Chunker;
+package net.weasel.immenCity;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -11,18 +11,18 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 
-public class ChunkerLoad 
+public class LoadStructure 
 {
-	public static ArrayList<String> getChunkData( String f ) { return Chunker.getChunkData(f); }
-	public static String getChunkOrientation( String f ) { return Chunker.getChunkOrientation(f); }
-	public static Integer[] getChunkDimensions( String f ) { return Chunker.getChunkDimensions(f); }
-	public static boolean isOrientedBlockType( int type ) { return Chunker.isOrientedBlockType(type); }
-	public static int reorientBlockData( BlockFace oldDir, BlockFace newDir, int type, int data ) { return Chunker.reorientBlockData(oldDir, newDir, type, data ); }
-	public static void logOutput( String message ) { Chunker.logOutput(message); }
+	public static ArrayList<String> getChunkData( String f ) { return immenCity.getChunkData(f); }
+	public static String getChunkOrientation( String f ) { return immenCity.getChunkOrientation(f); }
+	public static Integer[] getChunkDimensions( String f ) { return immenCity.getChunkDimensions(f); }
+	public static boolean isOrientedBlockType( int type ) { return immenCity.isOrientedBlockType(type); }
+	public static int reorientBlockData( BlockFace oldDir, BlockFace newDir, int type, int data ) { return immenCity.reorientBlockData(oldDir, newDir, type, data ); }
+	public static void logOutput( String message ) { immenCity.logOutput(message); }
 
 	public static void loadChunkFile( Player player, Location loc, BlockFace dir, String file )
 	{
-		String filename = "plugins/Chunker/" + player.getName() + "." + file + ".chunk";
+		String filename = "plugins/immenCity/" + player.getName() + "." + file + ".chunk";
 		File chunkFile = new File(filename);
 		BlockFace oldDir = null;
 

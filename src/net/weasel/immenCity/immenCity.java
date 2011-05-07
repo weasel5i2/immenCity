@@ -1,4 +1,4 @@
-package net.weasel.Chunker;
+package net.weasel.immenCity;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -13,7 +13,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class Chunker extends JavaPlugin
+public class immenCity extends JavaPlugin
 {
 	public static String pluginName = "";
 	public static String pluginVersion = "";
@@ -37,7 +37,7 @@ public class Chunker extends JavaPlugin
 		playerParams = new HashMap<Player,String>();
 		playerFacing = new HashMap<Player,BlockFace>();
 		
-		File checkDir = new File( "plugins/Chunker" );
+		File checkDir = new File( "plugins/immenCity" );
 		
 		if( checkDir.exists() == false )
 		{
@@ -45,7 +45,7 @@ public class Chunker extends JavaPlugin
 			logOutput( "Created new ChunkFile directory." );
 		}
 		
-		getCommand( "chunker" ).setExecutor( new Command(this) );
+		getCommand( "chunker" ).setExecutor( new LoadCommand(this) );
 
 		logOutput( getDescription().getName() + " v" + getDescription().getVersion() + " enabled." );
 	}
@@ -78,7 +78,7 @@ public class Chunker extends JavaPlugin
 	public static Integer[] getChunkDimensions( String f )
 	{
 		Integer[] retVal = { 0, 0, 0 };
-		String filename = "plugins/Chunker/" + f;
+		String filename = "plugins/immenCity/" + f;
 		String line = "";
 	
 		if( filename.endsWith(".chunk") == false ) filename = filename + ".chunk";
@@ -122,7 +122,7 @@ public class Chunker extends JavaPlugin
 	public static String getChunkOrientation( String f )
 	{
 		String retVal = "";
-		String filename = "plugins/Chunker/" + f;
+		String filename = "plugins/immenCity/" + f;
 		String line = "";
 	
 		if( filename.endsWith(".chunk") == false ) filename = filename + ".chunk";
@@ -159,7 +159,7 @@ public class Chunker extends JavaPlugin
 	public static ArrayList<String> getChunkData( String f )
 	{
 		ArrayList<String> retVal = new ArrayList<String>();
-		String filename = "plugins/Chunker/" + f;
+		String filename = "plugins/immenCity/" + f;
 		String line = "";
 	
 		if( filename.endsWith(".chunk") == false ) filename = filename + ".chunk";

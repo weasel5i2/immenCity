@@ -1,5 +1,5 @@
 name: Chunker
-main: net.weasel.Chunker.Chunker
+main: net.weasel.immenCity.immenCity
 version: 1.0
 commands:
   chunker:

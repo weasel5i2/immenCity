@@ -1,4 +1,4 @@
-package net.weasel.Chunker;
+package net.weasel.immenCity;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -11,25 +11,33 @@ import org.bukkit.entity.Player;
 
 public class WebTransfer 
 {
-	public static String targetURL = "http://weasel.net/minecraft/transfer.php";
+	public static String targetURL = "http://immencity.weasel.net/transfer.php";
 	
-	public static String arrayToString(String[] a, String separator) { return Chunker.arrayToString(a, separator); }
+	public static String arrayToString(String[] a, String separator) { return immenCity.arrayToString(a, separator); }
 
 	public static void sendFileToURL( Player p, String file, String[] blockData )
 	{
 		try 
 		{
 		    // Construct data
+			//
+			// The script expects the following variables to be filled:
+			//
+			// f = function -- in this case, "upload"
+			// p = player name
+			// n = file name
+			// d = data (joined into a string with ":" and urlencoded)
+			//
 		    String data = URLEncoder.encode("f", "UTF-8") + "=" 
 		    + URLEncoder.encode("upload", "UTF-8");
 
-		    data += URLEncoder.encode("player", "UTF-8") + "=" 
+		    data += URLEncoder.encode("p", "UTF-8") + "=" 
 		    + URLEncoder.encode(p.getName(), "UTF-8");
 		    
-		    data += "&" + URLEncoder.encode("file", "UTF-8") + "=" 
+		    data += "&" + URLEncoder.encode("n", "UTF-8") + "=" 
 		    + URLEncoder.encode(file, "UTF-8");
 		    
-		    data += "&" + URLEncoder.encode("data", "UTF-8") + "=" 
+		    data += "&" + URLEncoder.encode("d", "UTF-8") + "=" 
 		    + URLEncoder.encode(arrayToString(blockData,":"), "UTF-8");
 
 		    // Send data

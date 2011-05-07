@@ -1,4 +1,4 @@
-package net.weasel.Chunker;
+package net.weasel.immenCity;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -13,9 +13,9 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 
-public class ChunkerSave 
+public class SaveStructure 
 {
-	public static void logOutput( String message ) { Chunker.logOutput(message); }
+	public static void logOutput( String message ) { immenCity.logOutput(message); }
 	
 	public static void saveChunkFile( Player player, Location loc, BlockFace dir, String file, Integer x, Integer y, Integer z )
 	{
@@ -195,7 +195,7 @@ public class ChunkerSave
 	public static void saveChunkData( Player p, ArrayList<String> data, BlockFace dir, String file, int x, int y, int z )
 	{
 		int counter = 0;
-		String filename = "plugins/Chunker/" + p.getName() + "." + file + ".chunk";
+		String filename = "plugins/immenCity/" + p.getName() + "." + file + ".chunk";
 		
 		try
 	    {
@@ -206,7 +206,7 @@ public class ChunkerSave
 			SimpleDateFormat df = new SimpleDateFormat("MM-dd-yyyy hh:mm:ss");
 			StringBuilder cDate = new StringBuilder( df.format(now) );
 
-			outP.println( "[BEGIN CHUNKFILE " + Chunker.pluginVersion + "] " + cDate );
+			outP.println( "[BEGIN CHUNKFILE " + immenCity.pluginVersion + "] " + cDate );
 			outP.println( "SIZE " + x + " " + y + " " + z );
 			outP.println( "OO " + dir.name() );
 			
@@ -215,7 +215,7 @@ public class ChunkerSave
 				outP.println( data.get(counter) );
 			}
 			
-			outP.println( "[END CHUNKFILE " + Chunker.pluginVersion + "] " + cDate );
+			outP.println( "[END CHUNKFILE " + immenCity.pluginVersion + "] " + cDate );
 			outP.close();
 
 			p.sendMessage( ChatColor.BLUE + "Your ChunkFile '" + ChatColor.YELLOW 
