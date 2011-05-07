@@ -44,13 +44,6 @@ public class SaveStructure
 			endy = starty + y;
 			endz = startz - z;
 
-			logOutput( "startX: " + startx );
-			logOutput( "startY: " + starty );
-			logOutput( "startZ: " + startz );
-			logOutput( "endX: " + endx );
-			logOutput( "endY: " + endy );
-			logOutput( "endZ: " + endz );
-
 			for( zc = startz; zc != endz; zc-- )
 			{
 				for( yc = starty; yc != endy; yc++ )
@@ -83,13 +76,6 @@ public class SaveStructure
 			endx = startx + x;
 			endy = starty + y;
 			endz = startz - z;
-
-			logOutput( "startX: " + startx );
-			logOutput( "startY: " + starty );
-			logOutput( "startZ: " + startz );
-			logOutput( "endX: " + endx );
-			logOutput( "endY: " + endy );
-			logOutput( "endZ: " + endz );
 
 			for( zc = startz; zc != endz; zc-- )
 			{
@@ -124,13 +110,6 @@ public class SaveStructure
 			endy = starty + y;
 			endz = startz + z;
 
-			logOutput( "startX: " + startx );
-			logOutput( "startY: " + starty );
-			logOutput( "startZ: " + startz );
-			logOutput( "endX: " + endx );
-			logOutput( "endY: " + endy );
-			logOutput( "endZ: " + endz );
-
 			for( xc = startx; xc != endx; xc++ )
 			{
 				for( yc = starty; yc != endy; yc++ )
@@ -162,13 +141,6 @@ public class SaveStructure
 			endx = startx - x;
 			endy = starty + y;
 			endz = startz + z;
-
-			logOutput( "startX: " + startx );
-			logOutput( "startY: " + starty );
-			logOutput( "startZ: " + startz );
-			logOutput( "endX: " + endx );
-			logOutput( "endY: " + endy );
-			logOutput( "endZ: " + endz );
 
 			for( zc = startz; zc != endz; zc++ )
 			{

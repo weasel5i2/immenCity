@@ -17,6 +17,7 @@ public class immenCity extends JavaPlugin
 {
 	public static String pluginName = "";
 	public static String pluginVersion = "";
+	public static String pluginIni = "plugins/immenCity/Settings.ini";
 	public static HashMap<Player,Location> playerBlocks = null;
 	public static HashMap<Player,String> playerParams = null;
 	public static HashMap<Player,BlockFace> playerFacing = null;

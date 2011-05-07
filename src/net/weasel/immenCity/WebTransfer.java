@@ -7,11 +7,12 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public class WebTransfer 
 {
-	public static String targetURL = "http://immencity.weasel.net/transfer.php";
+	public static String targetURL = "http://immencity.weasel.net";
 	
 	public static String arrayToString(String[] a, String separator) { return immenCity.arrayToString(a, separator); }
 
@@ -41,7 +42,7 @@ public class WebTransfer
 		    + URLEncoder.encode(arrayToString(blockData,":"), "UTF-8");
 
 		    // Send data
-		    URL url = new URL( targetURL );
+		    URL url = new URL( targetURL + "/transfer.php" );
 		    URLConnection conn = url.openConnection();
 		    conn.setDoOutput(true);
 		    OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
@@ -55,9 +56,22 @@ public class WebTransfer
 		    
 		    while ((line = rd.readLine()) != null)
 		    {
-		        if( line.contains( "TRANSFER OK" ) )
+		        if( line.contains( "000 OK" ) )
 		        {
-		        	
+		        	String[] response = line.split( " " );
+		        	String manageURL = targetURL + "/b/?" + response[2]; 
+		        	p.sendMessage( ChatColor.BLUE + "Your chunkfile '" + ChatColor.YELLOW 
+		        	+ file + ChatColor.BLUE + "' was saved successfully." );
+		        	p.sendMessage( ChatColor.BLUE + "You can manage it at " + ChatColor.YELLOW 
+				    + manageURL + ChatColor.BLUE + "." );
+		        }
+		        else if( line.contains( "002 UNABLE TO SAVE CHUNKFILE" ) )
+		        {
+		        	// Uh oh..
+		        }
+		        else if( line.contains( "003 FILE EXISTS " ) )
+		        {
+		        	// Uh oh..
 		        }
 		    }
 		    wr.close();
