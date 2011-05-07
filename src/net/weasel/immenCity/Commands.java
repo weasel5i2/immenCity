@@ -1,7 +1,5 @@
 package net.weasel.immenCity;
 
-import java.io.File;
-
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -10,7 +8,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class LoadCommand implements CommandExecutor
+public class Commands implements CommandExecutor
 {
 	public immenCity instance;
 	
@@ -18,10 +16,11 @@ public class LoadCommand implements CommandExecutor
 	public static void saveChunkFile( Player p, Location l, BlockFace d, String f, Integer x, Integer y, Integer z ) { SaveStructure.saveChunkFile( p, l, d, f, x, y, z ); }
 	public static void loadChunkFile( Player p, Location l, BlockFace d, String f ) { LoadStructure.loadChunkFile( p, l, d, f ); }
 	public static Integer[] getChunkDimensions( String f ) { return immenCity.getChunkDimensions( f ); }
+	public static String[] getLocalChunkList() { return immenCity.getLocalChunkList(); };
 	
-	public LoadCommand(immenCity chunker) 
+	public Commands(immenCity i) 
 	{
-		instance = chunker;
+		instance = i;
 	}
 
 	@Override
@@ -68,7 +67,7 @@ public class LoadCommand implements CommandExecutor
 				{
 					arg0.sendMessage( ChatColor.BLUE + "You have not set a start point." );
 					arg0.sendMessage( ChatColor.BLUE + "Use " + ChatColor.YELLOW
-					+ "/chunker start" + ChatColor.BLUE + " to set one." );
+					+ "/icity start" + ChatColor.BLUE + " to set one." );
 					
 					return true;
 				}
@@ -91,7 +90,7 @@ public class LoadCommand implements CommandExecutor
 
 			if( a1.equals( "list" ) )
 			{
-				String[] chunks = getChunkList();
+				String[] chunks = getLocalChunkList();
 				Player p = (Player)arg0;
 				Integer[] s = new Integer[3];
 				String file = "";
@@ -127,7 +126,7 @@ public class LoadCommand implements CommandExecutor
 				{
 					arg0.sendMessage( ChatColor.BLUE + "You have not set a start point." );
 					arg0.sendMessage( ChatColor.BLUE + "Use " + ChatColor.YELLOW
-					+ "/chunker start" + ChatColor.BLUE + " to set one." );
+					+ "/icity start" + ChatColor.BLUE + " to set one." );
 					
 					return true;
 				}
@@ -139,42 +138,24 @@ public class LoadCommand implements CommandExecutor
 				}
 			}
 			
-			arg0.sendMessage( ChatColor.BLUE + "Usage: " + ChatColor.YELLOW + "/chunker start" );
+			arg0.sendMessage( ChatColor.BLUE + "Usage: " + ChatColor.YELLOW + "/icity start" );
 			arg0.sendMessage( ChatColor.BLUE + "         Sets the start point for save/load operations, based" );
 			arg0.sendMessage( ChatColor.BLUE + "         on the block you are targeting." );
 
-			arg0.sendMessage( "         " + ChatColor.YELLOW + "/chunker save <filename> <X> <Y> <Z>" );
+			arg0.sendMessage( "         " + ChatColor.YELLOW + "/icity save <filename> <X> <Y> <Z>" );
 			
 			arg0.sendMessage( ChatColor.BLUE + "         Saves <X> <Y> <Z>-sized chunk as <filename> relative " );
 			arg0.sendMessage( ChatColor.BLUE + "         to the start point. You " + ChatColor.RED + "MUST" + ChatColor.BLUE + " set a start point first!" );
 
-			arg0.sendMessage( "         " + ChatColor.YELLOW + "/chunker load <filename>" );
+			arg0.sendMessage( "         " + ChatColor.YELLOW + "/icity load <filename>" );
 			arg0.sendMessage( ChatColor.BLUE + "         Loads the chunk <filename> relative to the start point." );
 			arg0.sendMessage( ChatColor.BLUE + "         You " + ChatColor.RED + "MUST" + ChatColor.BLUE + " set a start point first!" );
 
-			arg0.sendMessage( "         " + ChatColor.YELLOW + "/chunker list"
+			arg0.sendMessage( "         " + ChatColor.YELLOW + "/icity list"
 			+ ChatColor.BLUE + " - Lists your saved chunks." );
 
 			return true;
 		}
 		return true;
-	}
-	
-	public static String[] getChunkList()
-	{
-		File dir = new File("plugins/immenCity/");
-		File[] files = dir.listFiles();
-		String file = "";
-		
-		int x = files.length;
-		String[] retVal = new String[x];
-				
-		for( x = 0; x < files.length; x++ )
-		{
-			file = files[x].getName();
-			retVal[x] = file;
-		}
-		
-		return retVal;
 	}
 }

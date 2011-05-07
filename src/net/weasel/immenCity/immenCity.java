@@ -45,7 +45,7 @@ public class immenCity extends JavaPlugin
 			logOutput( "Created new ChunkFile directory." );
 		}
 		
-		getCommand( "chunker" ).setExecutor( new LoadCommand(this) );
+		getCommand( "icity" ).setExecutor( new Commands(this) );
 
 		logOutput( getDescription().getName() + " v" + getDescription().getVersion() + " enabled." );
 	}
@@ -251,4 +251,22 @@ public class immenCity extends JavaPlugin
         }
         return result;
     }
+
+	public static String[] getLocalChunkList()
+	{
+		File dir = new File("plugins/immenCity/");
+		File[] files = dir.listFiles();
+		String file = "";
+		
+		int x = files.length;
+		String[] retVal = new String[x];
+				
+		for( x = 0; x < files.length; x++ )
+		{
+			file = files[x].getName();
+			retVal[x] = file;
+		}
+		
+		return retVal;
+	}
 }
