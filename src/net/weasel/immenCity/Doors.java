@@ -2,13 +2,13 @@ package net.weasel.immenCity;
 
 import org.bukkit.block.BlockFace;
 
-public class Door 
+public class Doors 
 {
 	public static int reorientBlockData( BlockFace oldDir, BlockFace newDir, int type, int data )
 	{
 		int retVal = data;
 		
-		// Door
+		// Doors
 		//
 		if( newDir == BlockFace.NORTH )
 		{

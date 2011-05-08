@@ -2,7 +2,7 @@ package net.weasel.immenCity;
 
 import org.bukkit.block.BlockFace;
 
-public class Rail 
+public class Rails 
 {
 	public static int reorientBlockData( BlockFace oldDir, BlockFace newDir, int type, int data )
 	{

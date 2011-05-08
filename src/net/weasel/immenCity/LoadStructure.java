@@ -1,6 +1,11 @@
 package net.weasel.immenCity;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -13,12 +18,9 @@ import org.bukkit.entity.Player;
 
 public class LoadStructure 
 {
-	public static ArrayList<String> getChunkData( String f ) { return immenCity.getChunkData(f); }
-	public static String getChunkOrientation( String f ) { return immenCity.getChunkOrientation(f); }
-	public static Integer[] getChunkDimensions( String f ) { return immenCity.getChunkDimensions(f); }
-	public static boolean isOrientedBlockType( int type ) { return immenCity.isOrientedBlockType(type); }
-	public static int reorientBlockData( BlockFace oldDir, BlockFace newDir, int type, int data ) { return immenCity.reorientBlockData(oldDir, newDir, type, data ); }
 	public static void logOutput( String message ) { immenCity.logOutput(message); }
+	public static boolean isOrientedBlockType( int type ) { return immenCity.isOrientedBlockType(type); }
+	public static int reorientAllBlockData( BlockFace oldDir, BlockFace newDir, int type, int data ) { return immenCity.reorientAllBlockData(oldDir, newDir, type, data); }
 
 	public static void loadChunkFile( Player player, Location loc, BlockFace dir, String file )
 	{
@@ -117,7 +119,7 @@ public class LoadStructure
 					
 					block.setTypeId( Integer.parseInt(data[0]) );
 					
-					newOrientation = reorientBlockData( oldDir, dir, Integer.parseInt(data[0]), Integer.parseInt(data[1]) );
+					newOrientation = reorientAllBlockData( oldDir, dir, Integer.parseInt(data[0]), Integer.parseInt(data[1]) );
 					block.setData( (byte)newOrientation );
 				}
 				for( int ob = 0; ob < orientedBlocks.size(); ob++ )
@@ -127,7 +129,7 @@ public class LoadStructure
 					
 					block.setTypeId( Integer.parseInt(data[0]) );
 					
-					newOrientation = reorientBlockData( oldDir, dir, Integer.parseInt(data[0]), Integer.parseInt(data[1]) );
+					newOrientation = reorientAllBlockData( oldDir, dir, Integer.parseInt(data[0]), Integer.parseInt(data[1]) );
 					block.setData( (byte)newOrientation );
 				}
 			}
@@ -177,7 +179,7 @@ public class LoadStructure
 					block = player.getWorld().getBlockAt(orientedBlocks.get(ob));
 					data = obData.get( orientedBlocks.get(ob) ).split( " " );
 
-					newOrientation = reorientBlockData( oldDir, dir, Integer.parseInt(data[0]), Integer.parseInt(data[1]) );
+					newOrientation = reorientAllBlockData( oldDir, dir, Integer.parseInt(data[0]), Integer.parseInt(data[1]) );
 					
 					block.setTypeId( Integer.parseInt(data[0]) );
 					block.setData( (byte)newOrientation );
@@ -187,7 +189,7 @@ public class LoadStructure
 					block = player.getWorld().getBlockAt(orientedBlocks.get(ob));
 					data = obData.get( orientedBlocks.get(ob) ).split( " " );
 
-					newOrientation = reorientBlockData( oldDir, dir, Integer.parseInt(data[0]), Integer.parseInt(data[1]) );
+					newOrientation = reorientAllBlockData( oldDir, dir, Integer.parseInt(data[0]), Integer.parseInt(data[1]) );
 					
 					block.setTypeId( Integer.parseInt(data[0]) );
 					block.setData( (byte)newOrientation );
@@ -240,7 +242,7 @@ public class LoadStructure
 					block = player.getWorld().getBlockAt(orientedBlocks.get(ob));
 					data = obData.get( orientedBlocks.get(ob) ).split( " " );
 
-					newOrientation = reorientBlockData( oldDir, dir, Integer.parseInt(data[0]), Integer.parseInt(data[1]) );
+					newOrientation = reorientAllBlockData( oldDir, dir, Integer.parseInt(data[0]), Integer.parseInt(data[1]) );
 					
 					block.setTypeId( Integer.parseInt(data[0]) );
 					block.setData( (byte)newOrientation );
@@ -250,7 +252,7 @@ public class LoadStructure
 					block = player.getWorld().getBlockAt(orientedBlocks.get(ob));
 					data = obData.get( orientedBlocks.get(ob) ).split( " " );
 
-					newOrientation = reorientBlockData( oldDir, dir, Integer.parseInt(data[0]), Integer.parseInt(data[1]) );
+					newOrientation = reorientAllBlockData( oldDir, dir, Integer.parseInt(data[0]), Integer.parseInt(data[1]) );
 					
 					block.setTypeId( Integer.parseInt(data[0]) );
 					block.setData( (byte)newOrientation );
@@ -303,7 +305,7 @@ public class LoadStructure
 					block = player.getWorld().getBlockAt(orientedBlocks.get(ob));
 					data = obData.get( orientedBlocks.get(ob) ).split( " " );
 
-					newOrientation = reorientBlockData( oldDir, dir, Integer.parseInt(data[0]), Integer.parseInt(data[1]) );
+					newOrientation = reorientAllBlockData( oldDir, dir, Integer.parseInt(data[0]), Integer.parseInt(data[1]) );
 					
 					block.setTypeId( Integer.parseInt(data[0]) );
 					block.setData( (byte)newOrientation );
@@ -313,7 +315,7 @@ public class LoadStructure
 					block = player.getWorld().getBlockAt(orientedBlocks.get(ob));
 					data = obData.get( orientedBlocks.get(ob) ).split( " " );
 
-					newOrientation = reorientBlockData( oldDir, dir, Integer.parseInt(data[0]), Integer.parseInt(data[1]) );
+					newOrientation = reorientAllBlockData( oldDir, dir, Integer.parseInt(data[0]), Integer.parseInt(data[1]) );
 					
 					block.setTypeId( Integer.parseInt(data[0]) );
 					block.setData( (byte)newOrientation );
@@ -322,5 +324,126 @@ public class LoadStructure
 		}
 		
 		player.sendMessage( "Done!" );
+	}
+
+	public static Integer[] getChunkDimensions( String f )
+	{
+		Integer[] retVal = { 0, 0, 0 };
+		String filename = "plugins/immenCity/" + f;
+		String line = "";
+	
+		if( filename.endsWith(".chunk") == false ) filename = filename + ".chunk";
+		
+		try 
+		{
+			FileInputStream fstream = new FileInputStream( filename );
+			BufferedReader in = new BufferedReader(new InputStreamReader(fstream));
+			
+			while(in.ready()) 
+			{
+				line = in.readLine().toString();
+				
+				if( line.startsWith( "SIZE " ) == true )
+				{
+					String temp[] = line.substring( 5 ).split( " " );
+					
+					if( temp.length == 3 )
+					{
+						retVal[0] = Integer.parseInt(temp[0]);
+						retVal[1] = Integer.parseInt(temp[1]);
+						retVal[2] = Integer.parseInt(temp[2]);
+					}
+				}
+			}
+			
+			in.close();
+		} 
+		catch (FileNotFoundException e) 
+		{
+			e.printStackTrace();
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+
+		return( retVal );
+	}
+
+	public static String getChunkOrientation( String f )
+	{
+		String retVal = "";
+		String filename = "plugins/immenCity/" + f;
+		String line = "";
+	
+		if( filename.endsWith(".chunk") == false ) filename = filename + ".chunk";
+		
+		try 
+		{
+			FileInputStream fstream = new FileInputStream( filename );
+			BufferedReader in = new BufferedReader(new InputStreamReader(fstream));
+			
+			while(in.ready()) 
+			{
+				line = in.readLine().toString();
+				
+				if( line.startsWith( "OO " ) == true )
+				{
+					retVal = line.substring( 3 );
+				}
+			}
+			
+			in.close();
+		} 
+		catch (FileNotFoundException e) 
+		{
+			e.printStackTrace();
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+
+		return( retVal );
+	}
+
+	public static ArrayList<String> getChunkData( String f )
+	{
+		ArrayList<String> retVal = new ArrayList<String>();
+		String filename = "plugins/immenCity/" + f;
+		String line = "";
+	
+		if( filename.endsWith(".chunk") == false ) filename = filename + ".chunk";
+		
+		try 
+		{
+			FileInputStream fstream = new FileInputStream( filename );
+			BufferedReader in = new BufferedReader(new InputStreamReader(fstream));
+			
+			while(in.ready()) 
+			{
+				line = in.readLine().toString().trim();
+				
+				if( line.startsWith("SIZE ") == false 
+					&& line.startsWith("OO ") == false 
+					&& line.startsWith("[") == false 
+					&& line.equals("") == false )
+				{
+					retVal.add(line);
+				}
+			}
+			
+			in.close();
+		} 
+		catch (FileNotFoundException e) 
+		{
+			e.printStackTrace();
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+
+		return( retVal );
 	}
 }

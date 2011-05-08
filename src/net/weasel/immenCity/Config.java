@@ -11,7 +11,10 @@ public class Config
 {
 	public static void logOutput( String message ) { immenCity.logOutput(message); }
 	
-	public static String pluginIni = immenCity.pluginIni;
+	public static void loadSettings()
+	{
+		
+	}
 	
 	public String[] getSettingValue(String fileName, String optionName, String defaultValue, String splitValue)
     {
@@ -76,7 +79,7 @@ public class Config
 
     public String[] getSetting( String which, String Default )
     {
-        return( getSettingValue(pluginIni, which, Default, "" ) );
+        return( getSettingValue(immenCity.pluginIni, which, Default, "" ) );
     }
 
     public boolean getBooleanSetting( String which, boolean dValue )
@@ -85,7 +88,7 @@ public class Config
     	
     	String dString = ( dValue ? "true" : "false" );
     	
-        if( getSettingValue(pluginIni, which, dString, "" )[0].equalsIgnoreCase("true") )
+        if( getSettingValue(immenCity.pluginIni, which, dString, "" )[0].equalsIgnoreCase("true") )
         	retVal = true;
         else
         	retVal = false;
@@ -95,13 +98,13 @@ public class Config
 
     public double getDblSetting( String item, double d )
     {
-    	double retVal = Double.parseDouble( getSettingValue(pluginIni, item, Double.toString(d), "" )[0]);
+    	double retVal = Double.parseDouble( getSettingValue(immenCity.pluginIni, item, Double.toString(d), "" )[0]);
     	return retVal;
     }
 
     public Float getFloatSetting( String item, Float dValue )
     {
-    	Float retVal = Float.valueOf(getSettingValue(pluginIni, item, dValue.toString(), "" )[0]);
+    	Float retVal = Float.valueOf(getSettingValue(immenCity.pluginIni, item, dValue.toString(), "" )[0]);
     	return retVal;
     }
 }

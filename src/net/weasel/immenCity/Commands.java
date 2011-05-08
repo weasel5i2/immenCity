@@ -15,7 +15,7 @@ public class Commands implements CommandExecutor
 	public static BlockFace getPlayerDirection( Player player ) { return immenCity.getPlayerDirection(player); }
 	public static void saveChunkFile( Player p, Location l, BlockFace d, String f, Integer x, Integer y, Integer z ) { SaveStructure.saveChunkFile( p, l, d, f, x, y, z ); }
 	public static void loadChunkFile( Player p, Location l, BlockFace d, String f ) { LoadStructure.loadChunkFile( p, l, d, f ); }
-	public static Integer[] getChunkDimensions( String f ) { return immenCity.getChunkDimensions( f ); }
+	public static Integer[] getChunkDimensions( String f ) { return LoadStructure.getChunkDimensions( f ); }
 	public static String[] getLocalChunkList() { return immenCity.getLocalChunkList(); };
 	
 	public Commands(immenCity i) 

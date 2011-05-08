@@ -2,7 +2,7 @@ package net.weasel.immenCity;
 
 import org.bukkit.block.BlockFace;
 
-public class Torch 
+public class Torches 
 {
 	public static int reorientBlockData( BlockFace oldDir, BlockFace newDir, int type, int data )
 	{
