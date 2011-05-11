@@ -16,6 +16,7 @@ import org.bukkit.entity.Player;
 public class SaveStructure 
 {
 	public static void logOutput( String message ) { immenCity.logOutput(message); }
+	public static void dbgOutput( String message ) { immenCity.dbgOutput(message); }
 	
 	public static void saveChunkFile( Player player, Location loc, BlockFace dir, String file, Integer x, Integer y, Integer z )
 	{
@@ -25,76 +26,61 @@ public class SaveStructure
 		
 		// Counters..
 		double xc, yc, zc;
-		
-		// Start coordinates..
-		double startx, starty, startz;
-		
-		// End coordinates..
-		double endx, endy, endz;
+		double X, Y, Z;
 
 		if( dir == BlockFace.NORTH )
 		{
 			// When facing NORTH, X = Z-- and Z = X--
 
-			startx = loc.getZ();
-			starty = loc.getY();
-			startz = loc.getX();
-			
-			endx = startx - x;
-			endy = starty + y;
-			endz = startz - z;
-
-			for( zc = startz; zc != endz; zc-- )
+			for( zc = 0; zc < z; zc++ )
 			{
-				for( yc = starty; yc != endy; yc++ )
+				for( yc = 0; yc < y; yc++ )
 				{
-					for( xc = startx; xc != endx; xc-- )
+					for( xc = 0; xc < x; xc++ )
 					{
-						block = player.getWorld().getBlockAt((int)zc, (int)yc, (int)xc);
-
-						logOutput( "block " + xc + "," + yc + "," + zc + " = " 
-						+ block.getTypeId() + ":" + block.getData() );
+						X = loc.getX() - zc;
+						Y = loc.getY() + yc;
+						Z = loc.getZ() - xc;
 						
+						block = player.getWorld().getBlockAt( (int)X, (int)Y, (int)Z );
+		
+						dbgOutput( "block " + X + "," + Y + "," + Z + " = " 
+						+ block.getTypeId() + ":" + block.getData() );
+								
 						blocks.add( block.getTypeId() + " " + block.getData() );
 					}
 				}
 			}
-			
-			player.sendMessage( "Saving " + blocks.size() + " blocks.." );
 
+			player.sendMessage( "Saving " + blocks.size() + " blocks.." );
 			saveChunkData( player, blocks, dir, file, x, y, z );
 		}
 		
 		else if( dir == BlockFace.EAST )
 		{
 			// When facing EAST, X = X++ and Z = Z--
-
-			startx = loc.getX();
-			starty = loc.getY();
-			startz = loc.getZ();
 			
-			endx = startx + x;
-			endy = starty + y;
-			endz = startz - z;
-
-			for( zc = startz; zc != endz; zc-- )
+			for( zc = 0; zc < z; zc++ )
 			{
-				for( yc = starty; yc != endy; yc++ )
+				for( yc = 0; yc < y; yc++ )
 				{
-					for( xc = startx; xc != endx; xc++ )
+					for( xc = 0; xc < x; xc++ )
 					{
-						block = player.getWorld().getBlockAt((int)xc, (int)yc, (int)zc);
-
-						logOutput( "block " + xc + "," + yc + "," + zc + " = " 
-						+ block.getTypeId() + ":" + block.getData() );
+						X = loc.getX() + xc;
+						Y = loc.getY() + yc;
+						Z = loc.getZ() - zc;
 						
+						block = player.getWorld().getBlockAt( (int)X, (int)Y, (int)Z );
+		
+						dbgOutput( "block " + X + "," + Y + "," + Z + " = " 
+						+ block.getTypeId() + ":" + block.getData() );
+								
 						blocks.add( block.getTypeId() + " " + block.getData() );
 					}
 				}
 			}
-			
-			player.sendMessage( "Saving " + blocks.size() + " blocks.." );
 
+			player.sendMessage( "Saving " + blocks.size() + " blocks.." );
 			saveChunkData( player, blocks, dir, file, x, y, z );
 		}
 		
@@ -102,64 +88,54 @@ public class SaveStructure
 		{
 			// When facing SOUTH, X = Z-- and Z = X++
 
-			startx = loc.getX();
-			starty = loc.getY();
-			startz = loc.getZ();
-			
-			endx = startx + x;
-			endy = starty + y;
-			endz = startz + z;
-
-			for( xc = startx; xc != endx; xc++ )
+			for( zc = 0; zc < z; zc++ )
 			{
-				for( yc = starty; yc != endy; yc++ )
+				for( yc = 0; yc < y; yc++ )
 				{
-					for( zc = startz; zc != endz; zc++ )
+					for( xc = 0; xc < x; xc++ )
 					{
-						block = player.getWorld().getBlockAt((int)xc, (int)yc, (int)zc);
-
-						logOutput( "block " + xc + "," + yc + "," + zc + " = " 
-						+ block.getTypeId() + ":" + block.getData() );
+						X = loc.getX() + zc;
+						Y = loc.getY() + yc;
+						Z = loc.getZ() + xc;
 						
+						block = player.getWorld().getBlockAt( (int)X, (int)Y, (int)Z );
+		
+						dbgOutput( "block " + X + "," + Y + "," + Z + " = " 
+						+ block.getTypeId() + ":" + block.getData() );
+								
 						blocks.add( block.getTypeId() + " " + block.getData() );
 					}
 				}
 			}
 			
 			player.sendMessage( "Saving " + blocks.size() + " blocks.." );
-
 			saveChunkData( player, blocks, dir, file, x, y, z );
 		}
 		else
 		{
 			// When facing WEST, X = X-- and Z = Z++
 
-			startx = loc.getX();
-			starty = loc.getY();
-			startz = loc.getZ();
-			
-			endx = startx - x;
-			endy = starty + y;
-			endz = startz + z;
-
-			for( zc = startz; zc != endz; zc++ )
+			for( zc = 0; zc < z; zc++ )
 			{
-				for( yc = starty; yc != endy; yc++ )
+				for( yc = 0; yc < y; yc++ )
 				{
-					for( xc = startx; xc != endx; xc-- )
+					for( xc = 0; xc < x; xc++ )
 					{
-						block = player.getWorld().getBlockAt((int)xc, (int)yc, (int)zc);
-
-						logOutput( "block " + xc + "," + yc + "," + zc + " = " 
-						+ block.getTypeId() + ":" + block.getData() );
+						X = loc.getX() - xc;
+						Y = loc.getY() + yc;
+						Z = loc.getZ() + zc;
 						
+						block = player.getWorld().getBlockAt( (int)X, (int)Y, (int)Z );
+		
+						dbgOutput( "block " + X + "," + Y + "," + Z + " = " 
+						+ block.getTypeId() + ":" + block.getData() );
+								
 						blocks.add( block.getTypeId() + " " + block.getData() );
 					}
 				}
 			}
 			
 			player.sendMessage( "Saving " + blocks.size() + " blocks.." );
-
 			saveChunkData( player, blocks, dir, file, x, y, z );
 		}
 	}
@@ -179,8 +155,8 @@ public class SaveStructure
 			StringBuilder cDate = new StringBuilder( df.format(now) );
 
 			outP.println( "[BEGIN CHUNKFILE " + immenCity.pluginVersion + "] " + cDate );
-			outP.println( "SIZE " + x + " " + y + " " + z );
-			outP.println( "OO " + dir.name() );
+			outP.println( "[SIZE " + x + " " + y + " " + z + "]" );
+			outP.println( "[OO " + dir.name() + "]" );
 			
 			for( counter = 0; counter < data.size(); counter++ )
 			{

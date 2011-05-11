@@ -12,8 +12,6 @@ import org.bukkit.entity.Player;
 
 public class WebTransfer 
 {
-	public static String targetURL = "http://immencity.weasel.net";
-	
 	public static String arrayToString(String[] a, String separator) { return immenCity.arrayToString(a, separator); }
 
 	public static void sendFileToURL( Player p, String file, String[] blockData )
@@ -42,7 +40,7 @@ public class WebTransfer
 		    + URLEncoder.encode(arrayToString(blockData,":"), "UTF-8");
 
 		    // Send data
-		    URL url = new URL( targetURL + "/transfer.php" );
+		    URL url = new URL( immenCity.onlineRepoURL + "/transfer.php" );
 		    URLConnection conn = url.openConnection();
 		    conn.setDoOutput(true);
 		    OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
@@ -59,7 +57,7 @@ public class WebTransfer
 		        if( line.contains( "000 OK" ) )
 		        {
 		        	String[] response = line.split( " " );
-		        	String manageURL = targetURL + "/b/?" + response[2]; 
+		        	String manageURL = immenCity.onlineRepoURL + "/b/?" + response[2]; 
 		        	p.sendMessage( ChatColor.BLUE + "Your chunkfile '" + ChatColor.YELLOW 
 		        	+ file + ChatColor.BLUE + "' was saved successfully." );
 		        	p.sendMessage( ChatColor.BLUE + "You can manage it at " + ChatColor.YELLOW 

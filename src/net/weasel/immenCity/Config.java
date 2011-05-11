@@ -4,8 +4,11 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
+import java.io.PrintWriter;
 
 public class Config 
 {
@@ -13,10 +16,39 @@ public class Config
 	
 	public static void loadSettings()
 	{
-		
+		immenCity.isOnlineRepo = getBooleanSetting( "isOnlineRepo", false );
+		immenCity.onlineRepoURL = getStringSetting( "onlineRepoURL", "http://immencity.weasel.net/" );
+		immenCity.isDebugging = getBooleanSetting( "isDebugging", false );;
 	}
 	
-	public String[] getSettingValue(String fileName, String optionName, String defaultValue, String splitValue)
+    public static boolean createIniFile()
+    {
+    	boolean retVal = false;
+    	
+    	try 
+    	{
+			FileWriter outFile = new FileWriter(immenCity.pluginIni);
+			
+			PrintWriter outP = new PrintWriter(outFile);
+			
+			outP.println( "isOnlineRepo=true" );
+			outP.println( "onlineRepoURL=http://immencity.weasel.net/" );
+			outP.println( "isDebugging=false" );
+			
+			outP.close();
+			retVal = true;
+		} 
+    	catch (IOException e) 
+    	{
+			logOutput( "Error writing to ini file." );
+			retVal = false;
+			e.printStackTrace();
+		}
+		
+		return retVal;
+    }
+    
+	public static String[] getSettingValue(String fileName, String optionName, String defaultValue, String splitValue)
     {
     	Boolean gotLine; // Verification variable
     	String[] returnValue = new String[100]; // Settings max at 100 values
@@ -77,12 +109,17 @@ public class Config
 		return returnValue;
     }
 
-    public String[] getSetting( String which, String Default )
+    public static String[] getStringsSetting( String which, String Default )
     {
         return( getSettingValue(immenCity.pluginIni, which, Default, "" ) );
     }
 
-    public boolean getBooleanSetting( String which, boolean dValue )
+    public static String getStringSetting( String which, String Default )
+    {
+        return( getSettingValue(immenCity.pluginIni, which, Default, "" )[0] );
+    }
+
+    public static boolean getBooleanSetting( String which, boolean dValue )
     {
     	boolean retVal;
     	

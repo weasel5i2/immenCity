@@ -16,6 +16,10 @@ public class immenCity extends JavaPlugin
 	public static HashMap<Player,String> playerParams = null;
 	public static HashMap<Player,BlockFace> playerFacing = null;
 	
+	public static boolean isOnlineRepo = false;
+	public static String onlineRepoURL = "";
+	public static boolean isDebugging = false;
+	
 	@Override
 	public void onDisable() 
 	{
@@ -32,16 +36,22 @@ public class immenCity extends JavaPlugin
 		playerParams = new HashMap<Player,String>();
 		playerFacing = new HashMap<Player,BlockFace>();
 		
-		File checkDir = new File( "plugins/immenCity" );
+		File checkConfig = new File( "plugins/immenCity" );
 		
-		if( checkDir.exists() == false )
+		if( checkConfig.exists() == false )
 		{
-			checkDir.mkdirs();
+			checkConfig.mkdirs();
 			logOutput( "Created new ChunkFile directory." );
 		}
 		
 		getCommand( "icity" ).setExecutor( new Commands(this) );
 
+		checkConfig = new File( pluginIni );
+		
+		if( checkConfig.exists() == false ) Config.createIniFile();
+		
+		Config.loadSettings();
+		
 		logOutput( getDescription().getName() + " v" + getDescription().getVersion() + " enabled." );
 	}
 
@@ -50,6 +60,11 @@ public class immenCity extends JavaPlugin
 		System.out.println( "[" + pluginName + "] " + message );
 	}
 
+	public static void dbgOutput( String message )
+	{
+		if( isDebugging ) logOutput( message );
+	}
+	
 	public static BlockFace getPlayerDirection( Player player )
 	{
 		BlockFace retVal = null;
@@ -67,48 +82,6 @@ public class immenCity extends JavaPlugin
 		else if( yaw > 315 || yaw < 45 ) 
 			retVal = BlockFace.WEST;
 
-		return retVal;
-	}
-
-	public static boolean isOrientedBlockType( int type )
-	{
-		boolean retVal = false;
-
-		// Wooden door
-		//
-		if( type == 64 ) retVal = true;
-		
-		// Standard rails
-		//
-		if( type == 66 ) retVal = true;
-		
-		return retVal;
-	}
-	
-	public static int reorientAllBlockData( BlockFace oldDir, BlockFace newDir, int type, int data )
-	{
-		int retVal = data;
-		
-		// Doors
-		//
-		if( type == 64 || type == 71 )
-		{
-			retVal = Doors.reorientBlockData( oldDir, newDir, type, data );
-		}
-		
-		// Rails
-		//
-		if( type == 66 )
-		{
-			retVal = Rails.reorientBlockData( oldDir , newDir, type, data );
-		}
-		
-		// Torches
-		if( type == 50 )
-		{
-			retVal = Torches.reorientBlockData( oldDir , newDir, type, data );
-		}
-		
 		return retVal;
 	}
 
