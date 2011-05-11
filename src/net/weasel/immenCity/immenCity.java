@@ -15,6 +15,7 @@ public class immenCity extends JavaPlugin
 	public static HashMap<Player,Location> playerBlocks = null;
 	public static HashMap<Player,String> playerParams = null;
 	public static HashMap<Player,BlockFace> playerFacing = null;
+	public static HashMap<Integer,int[]> orientedBlocks = null;
 	
 	public static boolean isOnlineRepo = false;
 	public static String onlineRepoURL = "";
@@ -35,6 +36,8 @@ public class immenCity extends JavaPlugin
 		playerBlocks = new HashMap<Player,Location>();
 		playerParams = new HashMap<Player,String>();
 		playerFacing = new HashMap<Player,BlockFace>();
+		
+		orientedBlocks = OrientedBlocks.BlockHash();
 		
 		File checkConfig = new File( "plugins/immenCity" );
 		
@@ -85,13 +88,27 @@ public class immenCity extends JavaPlugin
 		return retVal;
 	}
 
-	public static String arrayToString(String[] a, String separator) 
+	public static String arrayToString( String[] a, String separator ) 
     {
         String result = "";
         
         if (a.length > 0) 
         {
             result = a[0];    // start with the first element
+            for (int i=1; i<a.length; i++) {
+                result = result + separator + a[i];
+            }
+        }
+        return result;
+    }
+
+	public static String intArrayToString( int[] a, String separator ) 
+    {
+        String result = "";
+        
+        if (a.length > 0) 
+        {
+            result = String.valueOf(a[0]);    // start with the first element
             for (int i=1; i<a.length; i++) {
                 result = result + separator + a[i];
             }
