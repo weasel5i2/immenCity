@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.HashMap;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -24,7 +25,8 @@ public class immenCity extends JavaPlugin
 	@Override
 	public void onDisable() 
 	{
-		logOutput( getDescription().getName() + " v" + getDescription().getVersion() + " disabled." );
+		logOutput( getDescription().getName() + " v" 
+		+ getDescription().getVersion() + " disabled." );
 	}
 
 	@Override
@@ -37,7 +39,7 @@ public class immenCity extends JavaPlugin
 		playerParams = new HashMap<Player,String>();
 		playerFacing = new HashMap<Player,BlockFace>();
 		
-		orientedBlocks = OrientedBlocks.BlockHash();
+		orientedBlocks = Rotator.BlockHash();
 		
 		File checkConfig = new File( "plugins/immenCity" );
 		
@@ -47,7 +49,19 @@ public class immenCity extends JavaPlugin
 			logOutput( "Created new ChunkFile directory." );
 		}
 		
-		getCommand( "icity" ).setExecutor( new Commands(this) );
+		CommandExecutor cmdMain = new CommandMain(this);
+		CommandExecutor cmdLoad = new CommandLoad(this);
+		CommandExecutor cmdSave = new CommandSave(this);
+		CommandExecutor cmdList = new CommandList(this);
+		CommandExecutor cmdMeasure = new CommandMeasure(this);
+		
+		getCommand( "immencity" ).setExecutor( cmdMain );
+		getCommand( "icity" ).setExecutor( cmdMain );
+		getCommand( "iload" ).setExecutor( cmdLoad );
+		getCommand( "isave" ).setExecutor( cmdSave );
+		getCommand( "ilist" ).setExecutor( cmdList );
+		getCommand( "imeasure" ).setExecutor( cmdMeasure );
+		getCommand( "measure" ).setExecutor( cmdMeasure );
 
 		checkConfig = new File( pluginIni );
 		

@@ -8,17 +8,18 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class Commands implements CommandExecutor
+public class CommandMain implements CommandExecutor
 {
 	public immenCity instance;
 	
+	public static void logOutput( String message ) { immenCity.logOutput(message); }
 	public static BlockFace getPlayerDirection( Player player ) { return immenCity.getPlayerDirection(player); }
 	public static void saveChunkFile( Player p, Location l, BlockFace d, String f, Integer x, Integer y, Integer z ) { SaveStructure.saveChunkFile( p, l, d, f, x, y, z ); }
 	public static void loadChunkFile( Player p, Location l, BlockFace d, String f ) { LoadStructure.loadChunkFile( p, l, d, f ); }
 	public static Integer[] getChunkDimensions( String f ) { return LoadStructure.getChunkDimensions( f ); }
 	public static String[] getLocalChunkList() { return immenCity.getLocalChunkList(); };
 	
-	public Commands(immenCity i) 
+	public CommandMain(immenCity i) 
 	{
 		instance = i;
 	}
@@ -56,9 +57,71 @@ public class Commands implements CommandExecutor
 				return true;
 			}
 			
+			if( a1.equals( "direction" ) || a1.equals( "dir" ) )
+			{
+				Player p = (Player)arg0;
+				
+				p.sendMessage( ChatColor.BLUE + "You are facing " + ChatColor.YELLOW 
+				+ ( getPlayerDirection(p) == BlockFace.NORTH ? "north" :
+				  ( getPlayerDirection(p) == BlockFace.EAST ? "east" : 
+				  ( getPlayerDirection(p) == BlockFace.SOUTH ? "south" : "west")))
+				+ ChatColor.BLUE + "." );
+				
+				return true;
+			}
+
 			if( a1.equals( "measure" ) )
 			{
-				
+				if( immenCity.playerBlocks.containsKey( (Player)arg0) == false )
+				{
+					arg0.sendMessage( ChatColor.BLUE + "You have not set a start point." );
+					arg0.sendMessage( ChatColor.BLUE + "Use " + ChatColor.YELLOW
+					+ "/icity start" + ChatColor.BLUE + " to set one." );
+					
+					return true;
+				}
+				else
+				{
+					double sX, sY, sZ;  // Start coordinates
+					double eX, eY, eZ;  // End coordinates
+					double dX, dY, dZ;  // Difference
+					
+					Player p = (Player)arg0;
+					Location startLoc = immenCity.playerBlocks.get( p );
+					Location endLoc = p.getTargetBlock(null, 20).getLocation();
+					BlockFace startDir = immenCity.playerFacing.get( p );
+					
+					sX = startLoc.getX();
+					sY = startLoc.getY();
+					sZ = startLoc.getZ();
+					eX = endLoc.getX();
+					eY = endLoc.getY();
+					eZ = endLoc.getZ();
+					
+					dX = Math.abs( eX - sX );
+					dY = Math.abs( eY - sY );
+					dZ = Math.abs( eZ - sZ );
+
+					logOutput( "MEASURE RESULT (" + startDir.name() + "): " + dX + "," + dY + "," + dZ );
+					
+					if( startDir == BlockFace.NORTH )
+					{
+						
+					}
+					else if( startDir == BlockFace.EAST )
+					{
+						
+					}
+					else if( startDir == BlockFace.SOUTH )
+					{
+						
+					}
+					else if( startDir == BlockFace.WEST )
+					{
+						
+					}
+					
+				}
 			}
 
 			if( a1.equals( "save" ) )
@@ -156,6 +219,7 @@ public class Commands implements CommandExecutor
 
 			return true;
 		}
+
 		return true;
 	}
 }
