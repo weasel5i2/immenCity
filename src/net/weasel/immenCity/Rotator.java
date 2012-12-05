@@ -18,6 +18,8 @@ public class Rotator
 	public static HashMap<Integer,int[]> BlockHash()
 	{
 		HashMap<Integer,int[]> matrix = new HashMap<Integer,int[]>();
+		
+		//          ID               E  N  W  S
 
 		matrix.put(  23, new int[]{  4, 2, 5, 3 } );	// Dispensers
 		matrix.put(  26, new int[]{  1, 2, 3, 0 } );	// Bed (foot)
@@ -28,7 +30,7 @@ public class Rotator
 		matrix.put( 928, new int[]{  2, 5, 3, 4 } );	// Detector rails (inclined)
 		matrix.put(  50, new int[]{  2, 4, 1, 3 } );	// Torches
 		matrix.put(  53, new int[]{  0, 2, 1, 3 } );	// Wooden stairs
-//		matrix.put(  55, new int[]{  0, 0, 0, 0 } );	// Redstone wires
+		matrix.put(  54, new int[]{  4, 3, 5, 2 } );	// Chests
 		matrix.put(  63, new int[]{  4, 8,12, 0 } );	// Signposts
 		matrix.put(  64, new int[]{  2, 3, 2, 3 } );	// Wooden doors (bottom)
 		matrix.put( 964, new int[]{ 10,11,10,11 } );	// Wooden doors (top)
@@ -46,7 +48,6 @@ public class Rotator
 		matrix.put(  76, new int[]{  2, 4, 1, 3 } );	// Redstone torches (lit)
 		matrix.put(  77, new int[]{  2, 4, 1, 3 } );	// Stone buttons
 		matrix.put(  86, new int[]{  1, 2, 3, 0 } );	// Pumpkins
-//		matrix.put(  90, new int[]{  0, 0, 0, 0 } );	// Portals
 		matrix.put(  91, new int[]{  1, 2, 3, 0 } );	// Jacks-o-Lantern
 		matrix.put(  93, new int[]{  3, 0, 1, 2 } );	// Repeater (off) pos.1
 		matrix.put( 793, new int[]{  7, 4, 5, 6 } );	// Repeater (off) pos.2
@@ -56,6 +57,8 @@ public class Rotator
 		matrix.put( 794, new int[]{  7, 4, 5, 6 } );	// Repeater (on) pos.2
 		matrix.put( 894, new int[]{ 11, 8, 9,10 } );	// Repeater (on) pos.3
 		matrix.put( 994, new int[]{ 15,12,13,14 } );	// Repeater (on) pos.4
+		matrix.put(  96, new int[]{  0, 2, 1, 3 } );	// Trapdoor (closed)
+		matrix.put( 996, new int[]{  4, 6, 5, 7 } );	// Trapdoor (open)		
 
 		return matrix;
 	}
@@ -150,6 +153,9 @@ public class Rotator
 					retVal = 894;
 				else if( data > 3  ) 
 					retVal = 794;
+
+			case 96: // Trapdoors
+				if( data > 3 ) retVal = 996;
 		}
 		
 		return retVal;
