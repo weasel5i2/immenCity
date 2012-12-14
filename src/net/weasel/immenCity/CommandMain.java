@@ -35,7 +35,7 @@ public class CommandMain implements CommandExecutor
 			String a4 = ( arg3.length > 3 ? arg3[3] : "" );
 			String a5 = ( arg3.length > 4 ? arg3[4] : "" );
 			
-			if( a1.equals( "start" ) )
+			if( a1.equals( "start" ) || arg2.equals( "istart" ) )
 			{
 				Player p = (Player)arg0;
 				Block b = p.getTargetBlock( null, 20 );
@@ -57,7 +57,7 @@ public class CommandMain implements CommandExecutor
 				return true;
 			}
 			
-			if( a1.equals( "direction" ) || a1.equals( "dir" ) )
+			if( a1.equals( "direction" ) || a1.equals( "dir" ) || arg2.equals( "idir" ) )
 			{
 				Player p = (Player)arg0;
 				
@@ -70,7 +70,7 @@ public class CommandMain implements CommandExecutor
 				return true;
 			}
 
-			if( a1.equals( "measure" ) )
+			if( a1.equals( "measure" ) || arg2.equals( "imeasure" ) )
 			{
 				if( immenCity.playerBlocks.containsKey( (Player)arg0) == false )
 				{
@@ -124,7 +124,7 @@ public class CommandMain implements CommandExecutor
 				}
 			}
 
-			if( a1.equals( "save" ) )
+			if( a1.equals( "save" ) || arg2.equals( "isave" ) )
 			{
 				if( immenCity.playerBlocks.containsKey((Player)arg0) == false )
 				{
@@ -151,7 +151,7 @@ public class CommandMain implements CommandExecutor
 				}
 			}
 
-			if( a1.equals( "list" ) )
+			if( a1.equals( "list" ) || arg2.equals( "ilist" ) )
 			{
 				String[] chunks = getLocalChunkList();
 				Player p = (Player)arg0;
@@ -183,7 +183,7 @@ public class CommandMain implements CommandExecutor
 				return true;
 			}
 
-			if( a1.equals( "load" ) )
+			if( a1.equals( "load" ) || arg2.equals( "iload" ) )
 			{
 				if( immenCity.playerBlocks.containsKey((Player)arg0) == false )
 				{

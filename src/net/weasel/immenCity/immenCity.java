@@ -16,7 +16,6 @@ public class immenCity extends JavaPlugin
 	public static HashMap<Player,Location> playerBlocks = null;
 	public static HashMap<Player,String> playerParams = null;
 	public static HashMap<Player,BlockFace> playerFacing = null;
-	public static HashMap<Integer,int[]> orientedBlocks = null;
 	
 	public static boolean isOnlineRepo = false;
 	public static String onlineRepoURL = "";
@@ -39,8 +38,6 @@ public class immenCity extends JavaPlugin
 		playerParams = new HashMap<Player,String>();
 		playerFacing = new HashMap<Player,BlockFace>();
 		
-		orientedBlocks = Rotator.BlockHash();
-		
 		File checkConfig = new File( "plugins/immenCity" );
 		
 		if( checkConfig.exists() == false )
@@ -57,6 +54,8 @@ public class immenCity extends JavaPlugin
 		
 		getCommand( "immencity" ).setExecutor( cmdMain );
 		getCommand( "icity" ).setExecutor( cmdMain );
+		getCommand( "idir" ).setExecutor( cmdMain );
+		getCommand( "istart" ).setExecutor( cmdMain );
 		getCommand( "iload" ).setExecutor( cmdLoad );
 		getCommand( "isave" ).setExecutor( cmdSave );
 		getCommand( "ilist" ).setExecutor( cmdList );

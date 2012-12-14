@@ -10,7 +10,7 @@ public class Rotator
 	static int LEFT = 0;
 	static int RIGHT = 1;
 	
-	public static HashMap<Integer,int[]> orientedBlocks = immenCity.orientedBlocks;
+	public static HashMap<Integer,int[]> orientedBlocks = BlockHash();
 	public static void logOutput( String message ) { immenCity.logOutput(message); }
 	public static String arrayToString(String[] a, String separator) { return immenCity.arrayToString(a, separator); }
 	public static String intArrayToString( int[] a, String separator ) { return immenCity.intArrayToString(a, separator); }
@@ -93,6 +93,8 @@ public class Rotator
 		matrix.put( 9136, new int[]{  4, 7, 5, 6 } );	// Jungle Wood Stairs (inverted)
 		matrix.put(  143, new int[]{  2, 4, 1, 3 } );	// Wooden Button
 		matrix.put(  144, new int[]{  4, 3, 5, 2 } );	// Head
+		
+		matrix.put(   -1, new int[]{ -1,-1,-1,-1 } );	// Place Holder
 
 		return matrix;
 	}
@@ -233,6 +235,15 @@ public class Rotator
 				
 			case 131: // Tripwire Hook
 				if( data > 1 ) retVal = 9131;
+
+			case 134: // Spruce Wood Stairs
+				if( data > 3 ) retVal = 9134;
+				
+			case 135: // Birch Wood Stairs
+				if( data > 3 ) retVal = 9135;
+				
+			case 136: // Jungle Wood Stairs
+				if( data > 3 ) retVal = 9136;
 		}
 		
 		return retVal;
@@ -240,6 +251,9 @@ public class Rotator
 
 	public static void rotate( Block block, int data, BlockFace oldDir, BlockFace newDir )
 	{
+		
+		System.out.println( "BLOCK: " + block + ":" + data + " - " + oldDir + "/" + newDir );
+		
 		int[] dataValues = null;
 		int id = block.getTypeId();
 

@@ -173,7 +173,7 @@ public class LoadStructure
 						
 						data = chunk.get(C).split(" ");
 						block = player.getWorld().getBlockAt( (int)X, (int)Y, (int)Z );
-						
+
 						if( Rotator.orientedBlocks.containsKey( Integer.parseInt(data[0]) ) )
 						{
 							orientedBlocks.add( block.getLocation() );
