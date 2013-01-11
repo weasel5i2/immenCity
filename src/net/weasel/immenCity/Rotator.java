@@ -96,6 +96,9 @@ public class Rotator
 		matrix.put( 9136, new int[]{  4, 7, 5, 6 } );	// Jungle Wood Stairs (inverted)
 		matrix.put(  143, new int[]{  2, 4, 1, 3 } );	// Wooden Button
 		matrix.put(  144, new int[]{  4, 3, 5, 2 } );	// Head
+		matrix.put(  145, new int[]{ xx,xx,xx,xx } );	// Anvil
+		matrix.put( 8145, new int[]{ xx,xx,xx,xx } );	// Anvil (slightly damaged)
+		matrix.put( 9145, new int[]{ xx,xx,xx,xx } );	// Anvil (very damaged)
 		
 		matrix.put(   -1, new int[]{ -1,-1,-1,-1 } );	// Place Holder
 
