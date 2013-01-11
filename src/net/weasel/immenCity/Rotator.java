@@ -10,17 +10,16 @@ public class Rotator
 	static int LEFT = 0;
 	static int RIGHT = 1;
 	
-	public static HashMap<Integer,int[]> orientedBlocks = BlockHash();
 	public static void logOutput( String message ) { immenCity.logOutput(message); }
 	public static String arrayToString(String[] a, String separator) { return immenCity.arrayToString(a, separator); }
 	public static String intArrayToString( int[] a, String separator ) { return immenCity.intArrayToString(a, separator); }
-	
+	public static HashMap<Integer,int[]> orientedBlocks = BlockHash();
 	public static HashMap<Integer,int[]> BlockHash()
 	{
 		HashMap<Integer,int[]> matrix = new HashMap<Integer,int[]>();
 
-		//						  (when player is facing block)
-		//          ID                E  N  W  S
+		//					  (when player is facing block)
+		//            ID               E  N  W  S
 
 		matrix.put(   23,  new int[]{  4, 2, 5, 3 } );	// Dispenser
 		matrix.put(   26,  new int[]{  1, 2, 3, 0 } );	// Bed (foot)
@@ -29,9 +28,13 @@ public class Rotator
 		matrix.put(  927,  new int[]{  2, 5, 3, 4 } );	// Powered Rail (inclined)
 		matrix.put(   28,  new int[]{  0, 1, 0, 1 } );	// Detector Rail (straight)
 		matrix.put(  928,  new int[]{  2, 5, 3, 4 } );	// Detector Rail (inclined)
+		matrix.put(   29,  new int[]{  4, 3, 5, 2 } );	// Sticky Piston
+		matrix.put(   33,  new int[]{  4, 3, 5, 2 } );	// Piston
 		matrix.put(   50,  new int[]{  2, 4, 1, 3 } );	// Torch
 		matrix.put(   53,  new int[]{  0, 2, 1, 3 } );	// Wooden Stairs
 		matrix.put(   54,  new int[]{  4, 3, 5, 2 } );	// Chest
+		matrix.put(   61,  new int[]{  4, 3, 5, 2 } );	// Furnace
+		matrix.put(   62,  new int[]{  4, 3, 5, 2 } );	// Furnace (lit)
 		matrix.put(   63,  new int[]{  4, 8,12, 0 } );	// Signpost
 		matrix.put(   64,  new int[]{  2, 3, 2, 3 } );	// Wooden Door (bottom)
 		matrix.put(  964,  new int[]{ 10,11,10,11 } );	// Wooden Door (top)
@@ -39,7 +42,7 @@ public class Rotator
 		matrix.put(   66,  new int[]{  0, 1, 0, 1 } );	// Rail (straight)
 		matrix.put(  866,  new int[]{  2, 5, 3, 4 } );	// Rail (inclined)
 		matrix.put(  966,  new int[]{  6, 7, 8, 9 } );	// Rail (corner)
-		matrix.put(   67,  new int[]{  0, 2, 1, 3 } );	// Stone Stairs
+		matrix.put(   67,  new int[]{  0, 2, 1, 3 } );	// Cobblestone Stairs
 		matrix.put(   68,  new int[]{  4, 2, 5, 3 } );	// Wall Sign
 		matrix.put(   69,  new int[]{  2, 4, 1, 3 } );	// Lever (up)
 		matrix.put(  969,  new int[]{ 10,12, 9,11 } );	// Lever (down)
@@ -251,7 +254,6 @@ public class Rotator
 
 	public static void rotate( Block block, int data, BlockFace oldDir, BlockFace newDir )
 	{
-		
 		System.out.println( "BLOCK: " + block + ":" + data + " - " + oldDir + "/" + newDir );
 		
 		int[] dataValues = null;

@@ -16,6 +16,11 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 
+//When facing NORTH:  X = X-- and Z = Z--
+//When facing EAST:   X = Z++ and Z = X--
+//When facing SOUTH:  X = X-- and Z = Z++
+//When facing WEST:   X = Z-- and Z = X--
+
 public class LoadStructure 
 {
 	public static void logOutput( String message ) { immenCity.logOutput(message); }
@@ -86,7 +91,7 @@ public class LoadStructure
 		
 		if( dir == BlockFace.NORTH )
 		{
-			// When facing NORTH, X = Z-- and Z = X--
+			// When facing NORTH:  X = X-- and Z = Z--
 
 			for( zc = 0; zc < z; zc++ )
 			{
@@ -94,9 +99,9 @@ public class LoadStructure
 				{
 					for( xc = 0; xc < x; xc++ )
 					{
-						X = loc.getX() - zc;
+						X = loc.getX() - xc;
 						Y = loc.getY() + yc;
-						Z = loc.getZ() - xc;
+						Z = loc.getZ() - zc;
 						
 						data = chunk.get(C).split(" ");
 						block = player.getWorld().getBlockAt( (int)X, (int)Y, (int)Z );
@@ -123,7 +128,7 @@ public class LoadStructure
 
 		else if( dir == BlockFace.EAST )
 		{
-			// When facing EAST, X = X++ and Z = Z--
+			// When facing EAST:   X = Z++ and Z = X--
 
 			for( zc = 0; zc < z; zc++ )
 			{
@@ -131,9 +136,9 @@ public class LoadStructure
 				{
 					for( xc = 0; xc < x; xc++ )
 					{
-						X = loc.getX() + xc;
+						X = loc.getX() + zc;
 						Y = loc.getY() + yc;
-						Z = loc.getZ() - zc;
+						Z = loc.getZ() - xc;
 						
 						data = chunk.get(C).split(" ");
 						block = player.getWorld().getBlockAt( (int)X, (int)Y, (int)Z );
@@ -159,7 +164,7 @@ public class LoadStructure
 
 		else if( dir == BlockFace.SOUTH )
 		{
-			// When facing SOUTH, X = Z++ and Z = X++
+			// When facing SOUTH:  X = X-- and Z = Z++
 
 			for( zc = 0; zc < z; zc++ )
 			{
@@ -167,9 +172,9 @@ public class LoadStructure
 				{
 					for( xc = 0; xc < x; xc++ )
 					{
-						X = loc.getX() + zc;
+						X = loc.getX() - xc;
 						Y = loc.getY() + yc;
-						Z = loc.getZ() + xc;
+						Z = loc.getZ() + zc;
 						
 						data = chunk.get(C).split(" ");
 						block = player.getWorld().getBlockAt( (int)X, (int)Y, (int)Z );
@@ -195,7 +200,7 @@ public class LoadStructure
 
 		else if( dir == BlockFace.WEST )
 		{
-			// When facing WEST, X = X-- and Z = Z++
+			// When facing WEST:   X = Z-- and Z = X--
 
 			for( zc = 0; zc < z; zc++ )
 			{
@@ -203,9 +208,9 @@ public class LoadStructure
 				{
 					for( xc = 0; xc < x; xc++ )
 					{
-						X = loc.getX() - xc;
+						X = loc.getX() - zc;
 						Y = loc.getY() + yc;
-						Z = loc.getZ() + zc;
+						Z = loc.getZ() - xc;
 						
 						data = chunk.get(C).split(" ");
 						block = player.getWorld().getBlockAt( (int)X, (int)Y, (int)Z );

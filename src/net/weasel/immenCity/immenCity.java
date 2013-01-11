@@ -19,9 +19,9 @@ public class immenCity extends JavaPlugin
 	
 	public static boolean isOnlineRepo = false;
 	public static String onlineRepoURL = "";
-	public static boolean isDebugging = false;
+	public static boolean isDebugging = true;
 	
-	@Override
+    @Override
 	public void onDisable() 
 	{
 		logOutput( getDescription().getName() + " v" 
@@ -80,25 +80,11 @@ public class immenCity extends JavaPlugin
 	{
 		if( isDebugging ) logOutput( message );
 	}
-	
-	public static BlockFace getPlayerDirection( Player player )
+    
+    public static BlockFace getPlayerDirection( Player player )
 	{
-		BlockFace retVal = null;
-		float yaw = player.getLocation().getYaw();
-		
-		if( yaw < 0 ) yaw += 360;
-		if( yaw > 360 ) yaw -= 360;
-		
-		if( yaw > 45 && yaw < 135 ) 
-			retVal = BlockFace.NORTH;
-		else if( yaw > 135 && yaw < 225 ) 
-			retVal = BlockFace.EAST;
-		else if( yaw > 225 && yaw < 315 ) 
-			retVal = BlockFace.SOUTH;
-		else if( yaw > 315 || yaw < 45 ) 
-			retVal = BlockFace.WEST;
-
-		return retVal;
+        BlockFace[] dirs = { BlockFace.SOUTH, BlockFace.WEST, BlockFace.NORTH, BlockFace.EAST };
+        return dirs[Math.round( player.getLocation().getYaw() / 90f ) & 0x3];
 	}
 
 	public static String arrayToString( String[] a, String separator ) 
@@ -108,7 +94,9 @@ public class immenCity extends JavaPlugin
         if (a.length > 0) 
         {
             result = a[0];    // start with the first element
-            for (int i=1; i<a.length; i++) {
+
+            for (int i=1; i<a.length; i++) 
+            {
                 result = result + separator + a[i];
             }
         }
