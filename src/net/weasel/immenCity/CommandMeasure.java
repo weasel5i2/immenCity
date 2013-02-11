@@ -23,6 +23,7 @@ public class CommandMeasure implements CommandExecutor
 	{
 		instance = i;
 	}
+	
 	@Override
 	public boolean onCommand(CommandSender arg0, Command arg1, String arg2, String[] arg3) 
 	{
@@ -54,49 +55,52 @@ public class CommandMeasure implements CommandExecutor
 				eY = endLoc.getY();
 				eZ = endLoc.getZ();
 				
-				dX = Math.abs( eX - sX );
-				dY = Math.abs( eY - sY );
-				dZ = Math.abs( eZ - sZ );
+				dX = Math.abs( eX - sX ) + 1;
+				dY = Math.abs( eY - sY ) + 1;
+				dZ = Math.abs( eZ - sZ ) + 1;
 
 				logOutput( "MEASURE RESULT (" + startDir.name() + "): " + dX + "," + dY + "," + dZ );
 				
 				if( startDir == BlockFace.NORTH )
 				{
-					
+					p.sendMessage( ChatColor.BLUE + "This measurement: " + ChatColor.YELLOW + Math.round(dX) + ChatColor.BLUE + "x" + 
+							       ChatColor.YELLOW + Math.round(dY) + ChatColor.BLUE + "x" + ChatColor.YELLOW + Math.round(dZ) + ChatColor.BLUE + "." );
 				}
 				else if( startDir == BlockFace.EAST )
 				{
-					
+					p.sendMessage( ChatColor.BLUE + "This measurement: " + ChatColor.YELLOW + Math.round(dZ) + ChatColor.BLUE + "x" + 
+						       	   ChatColor.YELLOW + Math.round(dY) + ChatColor.BLUE + "x" + ChatColor.YELLOW + Math.round(dX) + ChatColor.BLUE + "." );
 				}
 				else if( startDir == BlockFace.SOUTH )
 				{
-					
+					p.sendMessage( ChatColor.BLUE + "This measurement: " + ChatColor.YELLOW + Math.round(dX) + ChatColor.BLUE + "x" + 
+							   	   ChatColor.YELLOW + Math.round(dY) + ChatColor.BLUE + "x" + ChatColor.YELLOW + Math.round(dZ) + ChatColor.BLUE + "." );
 				}
 				else if( startDir == BlockFace.WEST )
 				{
-					
+					p.sendMessage( ChatColor.BLUE + "This measurement: " + ChatColor.YELLOW + Math.round(dZ) + ChatColor.BLUE + "x" + 
+ 							       ChatColor.YELLOW + Math.round(dY) + ChatColor.BLUE + "x" + ChatColor.YELLOW + Math.round(dX) + ChatColor.BLUE + "." );
 				}
-				
 			}
-
-			arg0.sendMessage( ChatColor.BLUE + "Usage: " + ChatColor.YELLOW + "/istart" );
-			arg0.sendMessage( ChatColor.BLUE + "         Sets the start point for save/load operations, based" );
-			arg0.sendMessage( ChatColor.BLUE + "         on the block you are targeting." );
-
-			arg0.sendMessage( "         " + ChatColor.YELLOW + "/isave <filename> <X> <Y> <Z>" );
-			
-			arg0.sendMessage( ChatColor.BLUE + "         Saves <X> <Y> <Z>-sized chunk as <filename> relative " );
-			arg0.sendMessage( ChatColor.BLUE + "         to the start point. You " + ChatColor.RED + "MUST" + ChatColor.BLUE + " set a start point first!" );
-
-			arg0.sendMessage( "         " + ChatColor.YELLOW + "/iload <filename>" );
-			arg0.sendMessage( ChatColor.BLUE + "         Loads the chunk <filename> relative to the start point." );
-			arg0.sendMessage( ChatColor.BLUE + "         You " + ChatColor.RED + "MUST" + ChatColor.BLUE + " set a start point first!" );
-
-			arg0.sendMessage( "         " + ChatColor.YELLOW + "/ilist"
-			+ ChatColor.BLUE + " - Lists your saved chunks." );
 
 			return true;
 		}
+
+		arg0.sendMessage( ChatColor.BLUE + "Usage: " + ChatColor.YELLOW + "/istart" );
+		arg0.sendMessage( ChatColor.BLUE + "         Sets the start point for save/load operations, based" );
+		arg0.sendMessage( ChatColor.BLUE + "         on the block you are targeting." );
+
+		arg0.sendMessage( "         " + ChatColor.YELLOW + "/isave <filename> <width> <height> <depth>" );
+		
+		arg0.sendMessage( ChatColor.BLUE + "         Saves <W> <H> <D>-sized chunk as <filename> relative " );
+		arg0.sendMessage( ChatColor.BLUE + "         to the start point. You " + ChatColor.RED + "MUST" + ChatColor.BLUE + " set a start point first!" );
+
+		arg0.sendMessage( "         " + ChatColor.YELLOW + "/iload <filename>" );
+		arg0.sendMessage( ChatColor.BLUE + "         Loads the chunk <filename> relative to the start point." );
+		arg0.sendMessage( ChatColor.BLUE + "         You " + ChatColor.RED + "MUST" + ChatColor.BLUE + " set a start point first!" );
+
+		arg0.sendMessage( "         " + ChatColor.YELLOW + "/ilist"
+		+ ChatColor.BLUE + " - Lists your saved chunks." );
 
 		return false;
 	}

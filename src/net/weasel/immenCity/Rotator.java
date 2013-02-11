@@ -18,9 +18,12 @@ public class Rotator
 	{
 		HashMap<Integer,int[]> matrix = new HashMap<Integer,int[]>();
 
+		// If things in Minecraft were consistent, I could simply use bitmasks for this stuff..
+		//
+
 		//					  (when player is facing block)
 		//            ID               E  N  W  S
-
+		
 		matrix.put(   23,  new int[]{  4, 2, 5, 3 } );	// Dispenser
 		matrix.put(   26,  new int[]{  1, 2, 3, 0 } );	// Bed (foot)
 		matrix.put(  926,  new int[]{  9,10,11, 8 } );	// Bed (head)
@@ -96,9 +99,9 @@ public class Rotator
 		matrix.put( 9136, new int[]{  4, 7, 5, 6 } );	// Jungle Wood Stairs (inverted)
 		matrix.put(  143, new int[]{  2, 4, 1, 3 } );	// Wooden Button
 		matrix.put(  144, new int[]{  4, 3, 5, 2 } );	// Head
-		matrix.put(  145, new int[]{ xx,xx,xx,xx } );	// Anvil
-		matrix.put( 8145, new int[]{ xx,xx,xx,xx } );	// Anvil (slightly damaged)
-		matrix.put( 9145, new int[]{ xx,xx,xx,xx } );	// Anvil (very damaged)
+		matrix.put(  145, new int[]{  2, 1, 0, 3 } );	// Anvil
+		matrix.put( 8145, new int[]{  6, 5, 4, 7 } );	// Anvil (slightly damaged)
+		matrix.put( 9145, new int[]{ 10, 9, 8,11 } );	// Anvil (very damaged)
 		
 		matrix.put(   -1, new int[]{ -1,-1,-1,-1 } );	// Place Holder
 

@@ -2,9 +2,13 @@ package net.weasel.immenCity;
 
 import java.io.File;
 import java.util.HashMap;
+
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Server;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -16,6 +20,9 @@ public class immenCity extends JavaPlugin
 	public static HashMap<Player,Location> playerBlocks = null;
 	public static HashMap<Player,String> playerParams = null;
 	public static HashMap<Player,BlockFace> playerFacing = null;
+
+	public static Server server = null;
+	public static ConsoleCommandSender console = null;
 	
 	public static boolean isOnlineRepo = false;
 	public static String onlineRepoURL = "";
@@ -31,6 +38,9 @@ public class immenCity extends JavaPlugin
 	@Override
 	public void onEnable() 
 	{
+		server = getServer();
+		console = server.getConsoleSender();
+		
 		pluginName = getDescription().getName();
 		pluginVersion = getDescription().getVersion();
 		
@@ -73,7 +83,7 @@ public class immenCity extends JavaPlugin
 
 	public static void logOutput( String message )
 	{
-		System.out.println( "[" + pluginName + "] " + message );
+		console.sendMessage(ChatColor.GRAY + "[" + ChatColor.GREEN + pluginName + ChatColor.GRAY + "] " + ChatColor.WHITE + message );
 	}
 
 	public static void dbgOutput( String message )

@@ -24,7 +24,7 @@ public class SaveStructure
 	public static void dbgOutput( String message ) { immenCity.dbgOutput(message); }
 	
 	public static void saveChunkFile( Player player, Location loc, BlockFace dir, String file, Integer x, Integer y, Integer z )
-	{
+	{		
 		ArrayList<String> blocks = new ArrayList<String>();
 		
 		Block block = null;
@@ -35,7 +35,7 @@ public class SaveStructure
 
 		if( dir == BlockFace.NORTH )
 		{
-			// When facing NORTH:  X = X-- and Z = Z--
+			// When facing NORTH:  X = X++ and Z = Z--
 
 			for( zc = 0; zc < z; zc++ )
 			{
@@ -43,7 +43,7 @@ public class SaveStructure
 				{
 					for( xc = 0; xc < x; xc++ )
 					{
-						X = loc.getX() - xc;
+						X = loc.getX() + xc;
 						Y = loc.getY() + yc;
 						Z = loc.getZ() - zc;
 						
@@ -63,7 +63,7 @@ public class SaveStructure
 		
 		else if( dir == BlockFace.EAST )
 		{
-			// When facing EAST:   X = Z++ and Z = X--
+			// When facing EAST:   X = Z++ and Z = X++
 			
 			for( zc = 0; zc < z; zc++ )
 			{
@@ -73,7 +73,7 @@ public class SaveStructure
 					{
 						X = loc.getX() + zc;
 						Y = loc.getY() + yc;
-						Z = loc.getZ() - xc;
+						Z = loc.getZ() + xc;
 						
 						block = player.getWorld().getBlockAt( (int)X, (int)Y, (int)Z );
 		
